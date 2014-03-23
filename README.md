@@ -13,6 +13,14 @@ Land
 * 只允许在某级`ClassLoader`查找哪些类/包  
 \# 即会忽略这级`ClassLoader`的下级`ClassLoader`中这些类/包
 
+本项目的目标
+--------------------------
+
+* `Java`的`ClassLoader`的用途和限制
+* 理出`ClassLoader`使用和实现的原则
+* `ClassLoader`使用和实现容易出错的地方
+* 有使用`ClassLoader`的常见框架，及其实现方法和使用契约
+
 相关资料
 --------------------------
 
