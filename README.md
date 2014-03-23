@@ -6,20 +6,25 @@ Land
 * 可以从多处加载类，分配不同的`ClassLoader`
 * `ClassLoader`之间有继承关系  
 \# `ClassLoader`的继承关系会是一个树
+* 类加载会在上下级`ClassLoader`之间有委托关系
 
-`ClassLoader`继承关系的配置选项
+`ClassLoader`委托的配置选项
 ---------------------------------------
 
 * 是否允许在上级`ClassLoader`中查找类。   
 即是否 **委托**。
 * 允许在上级`ClassLoader`查找哪些类/包。   
 即可以配置 **委托** 的粒度。
-* 只允许在某级`ClassLoader`查找哪些类/包   
-即会忽略这级`ClassLoader`的下级`ClassLoader`中这些类/包，不允许子`ClassLoader`
+* 只允许在某级`ClassLoader`查找哪些类/包，会忽略这级`ClassLoader`的下级`ClassLoader`中这些类/包，不允许子`ClassLoader`。    
+\# 即必须 **委托**。
 
 本项目的目标
 ---------------------------------------
 
+* 给出类加载委托情况的完备说明
+* 给出类加载委托规则的规范描述。
+* 给出类加载委托规则的规范描述的自己的一个描述格式。  
+\# 对于我这个项目我会使用`Properties`来描述，简单够用。
 * `Java`的`ClassLoader`的用途和限制
 * 理出`ClassLoader`使用和实现的原则
 * `ClassLoader`使用和实现容易出错的地方
