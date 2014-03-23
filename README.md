@@ -35,7 +35,7 @@ Land
 进阶目标
 ---------------------------------------
 
-* 实现`OSGi`集成
+* 实现`OSGi`规范
 
 相关资料
 ---------------------------------------
@@ -59,14 +59,24 @@ Land
 
 #### ClassLoader
 
+* [IBM DeveloperWorks - 深入探讨Java类加载器](https://www.ibm.com/developerworks/cn/java/j-lo-classloader/)。一篇非常不错的`ClassLoader`的介绍文章，并且对比介绍了
+    * `Java` `SPI`的类加载策略。主要有`JDBC`和`JAXP`2种方式。
+    * `Tomcat`的类加载策略。
+    * `OSGi`的类加载策略。
 * [The basics of Java class loaders](http://www.javaworld.com/article/2077260/learn-java/the-basics-of-java-class-loaders.html)
-* [Java Security - Chapter 3. Java Class Loaders](http://docstore.mik.ua/orelly/java-ent/security/ch03_01.htm)
-* [Java安全模型介绍](http://www.ibm.com/developerworks/cn/java/j-lo-javasecurity/)
 * [Class.forName() vs ClassLoader.loadClass() - which to use for dynamic loading?](http://stackoverflow.com/questions/8100376/class-forname-vs-classloader-loadclass-which-to-use-for-dynamic-loading)
+
+### 安全
+
+* [IBM DeveloperWorks - Java安全模型介绍](http://www.ibm.com/developerworks/cn/java/j-lo-javasecurity/)
+* [IBM DeveloperWorks - Java 授权内幕](http://www.ibm.com/developerworks/cn/java/j-javaauth/)  
+\# 更多内容参见：[IBM DeveloperWorks - Java安全专题](https://www.ibm.com/developerworks/cn/java/j-security/)
+* [Java Security - Chapter 3. Java Class Loaders](http://docstore.mik.ua/orelly/java-ent/security/ch03_01.htm)
 
 ### ClassLoader Memory Leak
 
 * [Classloader leaks: the dreaded "java.lang.OutOfMemoryError: PermGen space" exception](http://frankkieviet.blogspot.com/2006/10/classloader-leaks-dreaded-permgen-space.html)
 * [How to fix the dreaded "java.lang.OutOfMemoryError: PermGen space" exception (classloader leaks)](http://frankkieviet.blogspot.com/2006/10/how-to-fix-dreaded-permgen-space.html)
-* [Diagnosis of Java class loader memory leaks](http://www.ibm.com/developerworks/webservices/library/ws-javaclass/index.html)
+* [IBM DeveloperWorks - Diagnosis of Java class loader memory leaks](http://www.ibm.com/developerworks/webservices/library/ws-javaclass/index.html)
 * [Reloading Java Classes 201: How do ClassLoader leaks happen?](http://zeroturnaround.com/rebellabs/rjc201/)
+* [Classloader-Related Memory Issues](http://javabook.compuware.com/content/memory/problem-patterns/class-loader-issues.aspx)
