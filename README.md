@@ -107,6 +107,7 @@ Land
     * 要遵循的基本约定
     * 要注意的安全问题
 * [Getting Started with Javassist - Class Loader](http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/tutorial/tutorial.html#load)
+* [Wikipedia - Java Classloader](http://en.wikipedia.org/wiki/Java_Classloader)
 * [Class.forName() vs ClassLoader.loadClass() - which to use for dynamic loading?](http://stackoverflow.com/questions/8100376/class-forname-vs-classloader-loadclass-which-to-use-for-dynamic-loading)
 
 ### 安全
