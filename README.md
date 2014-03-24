@@ -102,7 +102,10 @@ Land
     * `Java` `SPI`的类加载策略。包含`JDBC`和`JAXP`为代表的2种方式。
     * `Tomcat`的类加载策略。
     * `OSGi`的类加载策略。
-* [The basics of Java class loaders](http://www.javaworld.com/article/2077260/learn-java/the-basics-of-java-class-loaders.html)
+* [The basics of Java class loaders](http://www.javaworld.com/article/2077260/learn-java/the-basics-of-java-class-loaders.html)，给出了实现自定义`ClassLoader`
+    * 要想覆盖的`ClassLoader`关键方法
+    * 要遵循的基本约定
+    * 要注意的安全问题
 * [Getting Started with Javassist - Class Loader](http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/tutorial/tutorial.html#load)
 * [Class.forName() vs ClassLoader.loadClass() - which to use for dynamic loading?](http://stackoverflow.com/questions/8100376/class-forname-vs-classloader-loadclass-which-to-use-for-dynamic-loading)
 
