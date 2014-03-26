@@ -2,20 +2,20 @@ Land
 =================================================
 
 :point_right: 一个简单的基于`ClassLoader`用于依赖隔离的容器实现。  
-\# 在`Java`中依赖主要即是`Jar`。
+\# 在`Java`中依赖主要是`Jar`。
 
 依赖容器自然涉及下面的问题：
 
 * 可以从多处加载类，并分配不同的`ClassLoader`
 * `ClassLoader`之间有继承关系  
-\# `ClassLoader`的继承关系会是一个树
+`ClassLoader`的继承关系会是一个树
 * 类加载会在上下级`ClassLoader`之间有委托关系，如：
     * 是否允许在上级`ClassLoader`中查找类。   
-即是否 **委托**。
+    即是否 **委托**。
     * 允许在上级`ClassLoader`查找哪些类/包。   
-即可以配置 **委托** 的粒度。
+    即可以配置 **委托** 的粒度。
     * 只允许在某级`ClassLoader`查找哪些类/包，会忽略这级`ClassLoader`的下级`ClassLoader`中这些类/包，不允许子`ClassLoader`。    
-\# 即必须 **委托**。
+即必须 **委托**。
 
 
 功能
@@ -23,34 +23,38 @@ Land
 
 ### 1. `ClassLoader`委托关系的完备配置
 
-完备委托关系可以先分析只有父子2层`ClassLoader`间委托关系的情况：
+完备委托关系可以先分析只有父子2层`ClassLoader`间委托关系的情况。
 
-对于一个类在两层父子`ClassLoader`间委托关系，按是否加载排列组合有4种情况：
+某个类的加载在两层父子`ClassLoader`间委托关系，按是否加载排列组合一共有4种情况：
 
 * 父不加载，子不加载【00】    
-可以用来显示禁止某些类的加载。实际应用中应该 ***很少***有用到。
+可以用来显式禁止某些类的加载。    
+实际应用中应该 ***很少***会用到。
 * 父不加载，子加载【01】  
 子自理，父里即使包含了相同的类也不会污染子。实际场景：
-    * 用来`Tomcat`容器自用`Lib`，不会影响`Web`应用。
+    * 用来`Tomcat`容器自用`Lib`，不会影响到的`Web`应用。
 * 父加载，子不加载【10】  
 一定使用的父的类。实际场景：
-    * `Tomcat`容器的`Servlet` `API`，不允许被`Web`应用修改。
+    * `Tomcat`容器的`Servlet` `API`，不允许被`Web`应用改写。
 * 父加载，子加载【11】      
-两者可以加载的情况下，按谁优先分成2种情况：
-    * 父优先。【PC，Parent-Child】    
-    即是`Java`缺省委托策略，代理模式。这个委托策略可以保证Java核心库的类型优先加载，Java 核心库的类的加载工作由引导类加载器来统一完成，保证了Java应用所使用的都是同一个版本的Java核心库的类，是互相兼容的。
-    * 子优先。【CP，Child-Parent】    
-    这种委托关系比较复杂，有引起库版本混乱的风险！:bomb: :no_good: 实际应用中应该 ***很少***有用到。
+两者可以加载的情况下，按谁优先分成2个Case：
+    * 父优先。【Parent-Child】    
+    即是`Java`缺省的委托策略，代理模式（`Delegation Mode`）。这个委托策略可以保证`Java`核心库的类型优先加载，`Java`核心库的类的加载工作由引导类加载器来统一完成，保证了`Java`应用所使用的都是同一个版本的`Java`核心库的类，是互相兼容的。
+    * 子优先。【Child-Parent】    
+    这种委托关系比较复杂，有引起类版本混乱的风险！:bomb: :no_good:     
+    实际应用中应该 ***很少***会用到。
 
-加上【11】有2个子Case，合起来有5种情况，可以统一描述成：
+上面【11】的情况分成2个子Case，合起来一共有5种情况。
+
+委托关系可以统一描述成：
 
 1. None
-1. Child-Only
-2. Parent-Only
-3. Parent-Child
-4. Child-Parent
+2. Child-Only
+3. Parent-Only
+4. Parent-Child
+5. Child-Parent
 
-按上面2层委托关系约定，嵌套推广一下即可得到 包含 **任意层**`ClassLoader`的完备委托关系。:sparkles:
+按上面说明的2层委托关系约定，嵌套推广即可得到 包含 **任意层**`ClassLoader`的完备委托关系。:sparkles:
 
 举个3层`ClassLoader`包含上面组合的例子说明一下：
 
@@ -61,9 +65,21 @@ Land
 * 加载本地类目录或`Jar`文件
 * 加载本地有类目录或`Jar`文件的目录
 * 加载网络上的类    
-\# 这个功能应该很少使用 :stuck_out_tongue_winking_eye: ，为了功能完整而说明。
+这个功能应该很少使用 :stuck_out_tongue_winking_eye: ，为了功能完整而说明。
 * 加密类工具/加载加密的类    
-\# 这个功能应该很少使用 :stuck_out_tongue_closed_eyes: ，为了功能完整而说明。
+这个功能应该很少使用 :stuck_out_tongue_closed_eyes: ，为了功能完整而说明。
+
+使用场景
+---------------------------------------
+
+1. 在一个`JVM`中部署多个应用，但应用依赖不互相影响。    
+这样是提高 **系统利用率**的一种方式。
+2. 把平台级的二方库从应用中隔离出来，由架构部门统一升级。这样做的原因是：
+    - 平台级二方库如果有`Bug`影响面广，有统一的升级的需求。
+    - 平台级二方库升级使用面广，升级困难。
+
+> :information_source:    
+> 上面的部署方式中，依赖容器的引入对于应用的开发应该是 **透明**的。
 
 目标
 ---------------------------------------
@@ -71,7 +87,7 @@ Land
 * 给出类加载委托情况的完备说明
 * 给出类加载委托规则的规范描述
 * 给出类加载委托规则的规范描述的自己的一个描述格式  
-\# 对于我这个项目我会使用`Properties`来描述，简单够用。
+对于这个项目会优先使用`Properties`来描述，简单够用。
 * 说明`Java`的`ClassLoader`的用途和限制
 * 给出`ClassLoader`使用和实现的原则
 * `ClassLoader`使用和实现容易出错的地方
@@ -123,7 +139,7 @@ Land
 
 * [IBM DeveloperWorks - Java安全模型介绍](http://www.ibm.com/developerworks/cn/java/j-lo-javasecurity/)
 * [IBM DeveloperWorks - Java 授权内幕](http://www.ibm.com/developerworks/cn/java/j-javaauth/)  
-\# 更多内容参见：[IBM DeveloperWorks - Java安全专题](https://www.ibm.com/developerworks/cn/java/j-security/)
+更多内容参见：[IBM DeveloperWorks - Java安全专题](https://www.ibm.com/developerworks/cn/java/j-security/)
 * [Java Security - Chapter 3. Java Class Loaders](http://docstore.mik.ua/orelly/java-ent/security/ch03_01.htm)
 
 ### ClassLoader Memory Leak
