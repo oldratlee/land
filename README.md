@@ -41,6 +41,14 @@ Land
     * 子优先。【CP，Child-Parent】    
     这种委托方式比较复杂，有引起库版本混乱的风险！:bomb: :no_good: 实际应用中应该 ***很少***有用到。
 
+加上【11】有2个子Case，合起来有5种情况，可以统一描述成：
+
+1. None
+1. Child-Only
+2. Parent-Only
+3. Parent-Child
+4. Child-Parent
+
 按上面2层委托关系约定，嵌套推广一下即可得到 包含 **任意层**`ClassLoader`的完备委托关系。:sparkles:
 
 举个3层`ClassLoader`包含上面组合的例子说明一下：
