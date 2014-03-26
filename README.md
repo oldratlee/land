@@ -1,14 +1,15 @@
 Land
 =================================================
 
-:point_right: 一个简单的基于`ClassLoader`的用于依赖隔离（在`Java`中主要是`Jar`）的容器实现。
+:point_right: 一个简单的基于`ClassLoader`用于依赖隔离的容器实现。  
+\# 在`Java`中依赖主要即是`Jar`。
 
-依赖容器自然要处理下面的问题：
+依赖容器自然涉及下面的问题：
 
 * 可以从多处加载类，并分配不同的`ClassLoader`
 * `ClassLoader`之间有继承关系  
 \# `ClassLoader`的继承关系会是一个树
-* 类加载会在上下级`ClassLoader`之间有委托关系：
+* 类加载会在上下级`ClassLoader`之间有委托关系，如：
     * 是否允许在上级`ClassLoader`中查找类。   
 即是否 **委托**。
     * 允许在上级`ClassLoader`查找哪些类/包。   
@@ -20,11 +21,11 @@ Land
 功能
 ---------------------------------------
 
-### 1. 实现`ClassLoader`委托的完备配置选项
+### 1. `ClassLoader`委托关系的完备配置
 
-完备委托关系可以先分析只有父子2层`ClassLoader`间委托方式的情况：
+完备委托关系可以先分析只有父子2层`ClassLoader`间委托关系的情况：
 
-对于一个类在两层父子`ClassLoader`间委托方式，按是否加载排列组合有4种情况：
+对于一个类在两层父子`ClassLoader`间委托关系，按是否加载排列组合有4种情况：
 
 * 父不加载，子不加载【00】    
 可以用来显示禁止某些类的加载。实际应用中应该 ***很少***有用到。
@@ -39,7 +40,7 @@ Land
     * 父优先。【PC，Parent-Child】    
     即是`Java`缺省委托策略，代理模式。这个委托策略可以保证Java核心库的类型优先加载，Java 核心库的类的加载工作由引导类加载器来统一完成，保证了Java应用所使用的都是同一个版本的Java核心库的类，是互相兼容的。
     * 子优先。【CP，Child-Parent】    
-    这种委托方式比较复杂，有引起库版本混乱的风险！:bomb: :no_good: 实际应用中应该 ***很少***有用到。
+    这种委托关系比较复杂，有引起库版本混乱的风险！:bomb: :no_good: 实际应用中应该 ***很少***有用到。
 
 加上【11】有2个子Case，合起来有5种情况，可以统一描述成：
 
@@ -55,7 +56,7 @@ Land
 
 ***TODO***
 
-### 2. 实现常用类加载方式
+### 2. 常用类加载方式
 
 * 加载本地类目录或`Jar`文件
 * 加载本地有类目录或`Jar`文件的目录
@@ -111,7 +112,7 @@ Land
     * `Tomcat`的类加载策略。
     * `OSGi`的类加载策略。
 * [The basics of Java class loaders](http://www.javaworld.com/article/2077260/learn-java/the-basics-of-java-class-loaders.html)，给出了实现自定义`ClassLoader`
-    * 要想覆盖的`ClassLoader`关键方法
+    * 要覆盖的`ClassLoader`关键方法
     * 要遵循的基本约定
     * 要注意的安全问题
 * [Getting Started with Javassist - Class Loader](http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/tutorial/tutorial.html#load)
