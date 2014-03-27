@@ -109,10 +109,10 @@ Land
 
 #### ClassLoader
 
-* [Class Loading](http://docs.oracle.com/javase/jndi/tutorial/beyond/misc/classloader.html)
+* [The Java Language Specification](http://docs.oracle.com/javase/specs/jls/se7/html/index.html)的[第12章 Execution](http://docs.oracle.com/javase/specs/jls/se7/html/jls-12.html)和[The Java Virtual Machine Specification](http://docs.oracle.com/javase/specs/jvms/se7/html/index.html)的[第5章 Loading, Linking, and Initializing](http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-5.html)详细介绍了 `Java`类的加载、链接和初始化。    
+不同`Java`版本的语言和`JVM`在<http://docs.oracle.com/javase/specs/>
 * [Multithreaded Custom Class Loaders in Java SE 7](http://docs.oracle.com/javase/7/docs/technotes/guides/lang/cl-mt.html)
 * [Understanding Extension Class Loading](http://docs.oracle.com/javase/tutorial/ext/basics/load.html)
-* [Understanding WebLogic Server Application Classloading](http://docs.oracle.com/cd/E24329_01/web.1211/e24368/classloading.htm)
 * [Java API doc - ClassLoader](http://docs.oracle.com/javase/7/docs/api/java/lang/ClassLoader.html)
 
 #### Permission
@@ -132,9 +132,18 @@ Land
     * 要覆盖的`ClassLoader`关键方法
     * 要遵循的基本约定
     * 要注意的安全问题
+* [IBM DeveloperWorks - Java programming dynamics, Part 1: Java classes and class loading](https://www.ibm.com/developerworks/library/j-dyn0429/)，中文版[Java编程的动态性，第 1 部分: 类和类装入](http://www.ibm.com/developerworks/cn/java/j-dyn0429/)    
+[Java programming dynamics series](http://www.ibm.com/developerworks/views/java/libraryview.jsp?search_by=Java+dynamics)，这个系列的中文版[Java编程的动态性](https://www.ibm.com/developerworks/cn/views/java/libraryview.jsp?type_by=%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0&view_by=search&search_by=Java+%E7%BC%96%E7%A8%8B%E7%9A%84%E5%8A%A8%E6%80%81%E6%80%A7)
+* [IBM Java Diagnostics Guide - Class loading](http://publib.boulder.ibm.com/infocenter/javasdk/v5r0/index.jsp?topic=%2Fcom.ibm.java.doc.diagnostics.50%2Fdiag%2Funderstanding%2Fclass_loader.html)
 * [Getting Started with Javassist - Class Loader](http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/tutorial/tutorial.html#load)
 * [Wikipedia - Java Classloader](http://en.wikipedia.org/wiki/Java_Classloader)
 * [Class.forName() vs ClassLoader.loadClass() - which to use for dynamic loading?](http://stackoverflow.com/questions/8100376/class-forname-vs-classloader-loadclass-which-to-use-for-dynamic-loading)
+
+### ClassLoader实际应用
+
+* [Understanding WebLogic Server Application Classloading](http://docs.oracle.com/cd/E24329_01/web.1211/e24368/classloading.htm)
+* [The Apache Tomcat 5.5 Servlet/JSP Container - Class Loader HOW-TO](http://tomcat.apache.org/tomcat-5.5-doc/class-loader-howto.html)：详细介绍了`Tomcat` 5.5中的类加载器机制。
+* [OSGi Service Platform Core Specification](http://www.osgi.org/Specifications/HomePage)
 
 ### 安全
 
