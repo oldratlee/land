@@ -111,11 +111,11 @@ Land
 
 * [The Java Language Specification](http://docs.oracle.com/javase/specs/jls/se7/html/index.html)的[第12章 Execution](http://docs.oracle.com/javase/specs/jls/se7/html/jls-12.html)和[The Java Virtual Machine Specification](http://docs.oracle.com/javase/specs/jvms/se7/html/index.html)的[第5章 Loading, Linking, and Initializing](http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-5.html)详细介绍了`Java`类的加载、链接和初始化。    
 不同`Java`版本的语言和`JVM`规范在<http://docs.oracle.com/javase/specs/>
-* [Multithreaded Custom Class Loaders in Java SE 7](http://docs.oracle.com/javase/7/docs/technotes/guides/lang/cl-mt.html)，`JDK` 7修复了`ClassLoader`的一个死锁问题。    
+* [Multithreaded Custom Class Loaders in Java SE 7](http://docs.oracle.com/javase/7/docs/technotes/guides/lang/cl-mt.html)，`JDK` 7修复了`ClassLoader`的死锁问题。    
 这个问题在`JDK`之前的版本中一直存在。平时使用中确实不容易碰到，但在线上应用复杂场景中有观察到过。这篇文档给出问题的原因及其修复方法。
 * [Understanding Extension Class Loading](http://docs.oracle.com/javase/tutorial/ext/basics/load.html)
 * [Java API doc - ClassLoader](http://docs.oracle.com/javase/7/docs/api/java/lang/ClassLoader.html)
-* `Sun` `JDK`用于启动应用的[`Laucher`类实现类](http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/7u40-b43/sun/misc/Launcher.java)。    
+* `Sun` `JDK`用于启动应用的[`Laucher`实现类](http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/7u40-b43/sun/misc/Launcher.java)。    
 注： `sun.misc.Launcher`类没有在`JDK`附带的`src.zip`中，因为是`JDK`具体实现部分（厂商相关），可以在`JDK`源码中找到这个`Java`类。    
 `Sun`的`JDK`的源码下载在[这里](http://download.java.net/openjdk/jdk7/)，厂商相关`Java`类在目录`jdk/src/share/classes`下。
 * `Laucher`类中包含了`Java`除`BootstrapClassloader`（是用本地代码`C/C++`来实现）外另2个`Buildin` `ClassLoader`类的实现：
@@ -135,10 +135,13 @@ Land
     * `Java` `SPI`的类加载策略。包含`JDBC`和`JAXP`为代表的2种方式。
     * `Tomcat`的类加载策略。
     * `OSGi`的类加载策略。
-* [The basics of Java class loaders](http://www.javaworld.com/article/2077260/learn-java/the-basics-of-java-class-loaders.html)，给出了实现自定义`ClassLoader`
+* [The basics of Java class loaders](http://www.javaworld.com/article/2077260/learn-java/the-basics-of-java-class-loaders.html)   
+`1996`年的一篇老文章，其中描述功能现在可以通过`Java 2`提供的[`java.net.URLClassLoader`](http://docs.oracle.com/javase/7/docs/api/java/net/URLClassLoader.html)方便的完成。    
+但实现复杂自定义`ClassLoader`的流程是一样的，文章给出了实现自定义`ClassLoader`
     * 要覆盖的`ClassLoader`关键方法
     * 要遵循的基本约定
     * 要注意的安全问题
+* [IBM DeveloperWorks - Understanding the Java ClassLoader](http://www6.software.ibm.com/developerworks/education/j-classloader/j-classloader-a4.pdf)
 * [IBM DeveloperWorks - Java programming dynamics, Part 1: Java classes and class loading](https://www.ibm.com/developerworks/library/j-dyn0429/)，中文版在：[Java编程的动态性，第 1 部分: 类和类装入](http://www.ibm.com/developerworks/cn/java/j-dyn0429/)    
 [Java programming dynamics series](http://www.ibm.com/developerworks/views/java/libraryview.jsp?search_by=Java+dynamics)，这个系列的中文版[Java编程的动态性](https://www.ibm.com/developerworks/cn/views/java/libraryview.jsp?type_by=%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0&view_by=search&search_by=Java+%E7%BC%96%E7%A8%8B%E7%9A%84%E5%8A%A8%E6%80%81%E6%80%A7)
 * [IBM Java Diagnostics Guide - Class loading](http://publib.boulder.ibm.com/infocenter/javasdk/v5r0/index.jsp?topic=%2Fcom.ibm.java.doc.diagnostics.50%2Fdiag%2Funderstanding%2Fclass_loader.html)
