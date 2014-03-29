@@ -139,7 +139,7 @@ public class LandClassLoader extends URLClassLoader {
             if (name.equals(m)) {
                 return true;
             }
-            if (m.endsWith("..") && name.startsWith(m.substring(m.length() - 1))) {
+            if (m.endsWith("..") && name.startsWith(m.substring(0, m.length() - 1))) {
                 return true;
             }
             if (m.endsWith(".") && name.startsWith(m) && !name.substring(m.length() + 1).contains(".")) {
