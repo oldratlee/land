@@ -41,7 +41,8 @@ Land
 * 父加载，子加载【11】      
 两者可以加载的情况下，按谁优先分成2个Case：
     * 父优先。【Parent-Child】    
-    即是`Java`缺省的委托策略，代理模式（`Delegation Mode`）。这个委托策略可以保证`Java`核心库的类型优先加载，`Java`核心库的类的加载工作由引导类加载器来统一完成，保证了`Java`应用所使用的都是同一个版本的`Java`核心库的类，是互相兼容的。
+    即是`Java`缺省的委托策略，代理模式（`Delegation Mode`）。    
+    这个委托策略可以保证`Java`核心库的类型优先加载，`Java`核心库的类的加载工作由引导类加载器来统一完成，保证了`Java`应用所使用的都是同一个版本的`Java`核心库的类，是互相兼容的。
     * 子优先。【Child-Parent】    
     这种委托关系比较复杂，有引起类版本混乱的风险！:bomb: :no_good:     
     实际应用中应该 ***很少***会用到。
@@ -111,10 +112,12 @@ Land
 
 #### ClassLoader
 
-* [The Java Language Specification](http://docs.oracle.com/javase/specs/jls/se7/html/index.html)的[第12章 Execution](http://docs.oracle.com/javase/specs/jls/se7/html/jls-12.html)和[The Java Virtual Machine Specification](http://docs.oracle.com/javase/specs/jvms/se7/html/index.html)的[第5章 Loading, Linking, and Initializing](http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-5.html)详细介绍了`Java`类的加载、链接和初始化。    
+* [The Java Language Specification](http://docs.oracle.com/javase/specs/jls/se7/html/index.html)的[第12章 Execution](http://docs.oracle.com/javase/specs/jls/se7/html/jls-12.html)和[The Java Virtual Machine Specification](http://docs.oracle.com/javase/specs/jvms/se7/html/index.html)的[第5章 Loading, Linking, and Initializing](http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-5.html)    
+详细介绍了`Java`类的加载、链接和初始化。    
 不同`Java`版本的语言和`JVM`规范在<http://docs.oracle.com/javase/specs/>
 * [Multithreaded Custom Class Loaders in Java SE 7](http://docs.oracle.com/javase/7/docs/technotes/guides/lang/cl-mt.html)，`JDK` 7修复了`ClassLoader`的死锁问题。    
-这个问题在`JDK`之前的版本中一直存在。平时使用中确实不容易碰到，但在线上应用复杂场景中有观察到过。这篇文档给出问题的原因及其修复方法。
+这个问题在`JDK`之前的版本中一直存在。平时使用中确实不容易碰到，但在线上应用复杂场景中有观察到过。    
+这篇文档给出问题的原因及其修复方法。
 * `Java`命令行选项`-verbose:class`可以在加载类时显示相关信息。    
 完整`Java`命令行选项参见： <http://docs.oracle.com/javase/7/docs/technotes/tools/windows/java.html>
 * [Java API doc - ClassLoader](http://docs.oracle.com/javase/7/docs/api/java/lang/ClassLoader.html)
@@ -146,12 +149,15 @@ Land
     * 要遵循的基本约定
     * 要注意的安全问题
 * [IBM DeveloperWorks - Understanding the Java ClassLoader](http://www6.software.ibm.com/developerworks/education/j-classloader/j-classloader-a4.pdf)
-* [IBM DeveloperWorks - Java programming dynamics, Part 1: Java classes and class loading](https://www.ibm.com/developerworks/library/j-dyn0429/)，中文版在：[Java编程的动态性，第 1 部分: 类和类装入](http://www.ibm.com/developerworks/cn/java/j-dyn0429/)    
+* [IBM DeveloperWorks - Java programming dynamics, Part 1: Java classes and class loading](https://www.ibm.com/developerworks/library/j-dyn0429/)    
+中文版在：[Java编程的动态性，第 1 部分: 类和类装入](http://www.ibm.com/developerworks/cn/java/j-dyn0429/)    
 [Java programming dynamics series](http://www.ibm.com/developerworks/views/java/libraryview.jsp?search_by=Java+dynamics)，这个系列的中文版[Java编程的动态性](https://www.ibm.com/developerworks/cn/views/java/libraryview.jsp?type_by=%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0&view_by=search&search_by=Java+%E7%BC%96%E7%A8%8B%E7%9A%84%E5%8A%A8%E6%80%81%E6%80%A7)
 * [onjava.com - Internals of Java Class Loading](http://www.onjava.com/pub/a/onjava/2005/01/26/classloading.html)
 * [IBM DeveloperWorks - Demystifying class loading problems series](http://www.ibm.com/developerworks/views/java/libraryview.jsp?search_by=demystifying+class+loading+problems)
 * [IBM Java Diagnostics Guide - Class loading](http://publib.boulder.ibm.com/infocenter/javasdk/v5r0/index.jsp?topic=%2Fcom.ibm.java.doc.diagnostics.50%2Fdiag%2Funderstanding%2Fclass_loader.html)
 * [Getting Started with Javassist - Class Loader](http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/tutorial/tutorial.html#load)
+* [Sheng Liang and Gilad Bracha, "Dynamic Class Loading in the Java Virtual Machine"](http://kenwublog.com/docs/Dynamic+Class+Loading+in+the+Java+Virtual+Machine.pdf)    
+ACM OOPSLA'98, pp.36-44, 1998.
 * [Wikipedia - Java Classloader](http://en.wikipedia.org/wiki/Java_Classloader)
 * [Class.forName() vs ClassLoader.loadClass() - which to use for dynamic loading?](http://stackoverflow.com/questions/8100376/class-forname-vs-classloader-loadclass-which-to-use-for-dynamic-loading)
 
