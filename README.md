@@ -117,8 +117,8 @@ Land
 这个问题在`JDK`之前的版本中一直存在。平时使用中确实不容易碰到，但在线上应用复杂场景中有观察到过。这篇文档给出问题的原因及其修复方法。
 * `Java`命令行选项`-verbose:class`可以在加载类时显示相关信息。    
 完整`Java`命令行选项参见： <http://docs.oracle.com/javase/7/docs/technotes/tools/windows/java.html>
-* [Understanding Extension Class Loading](http://docs.oracle.com/javase/tutorial/ext/basics/load.html)
 * [Java API doc - ClassLoader](http://docs.oracle.com/javase/7/docs/api/java/lang/ClassLoader.html)
+* [Understanding Extension Class Loading](http://docs.oracle.com/javase/tutorial/ext/basics/load.html)
 * `Sun` `JDK`用于启动应用的[`Laucher`实现类](http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/7u40-b43/sun/misc/Launcher.java)。    
 注： `sun.misc.Launcher`类没有在`JDK`附带的`src.zip`中，因为是`JDK`具体实现部分（厂商相关），可以在`JDK`源码中找到这个`Java`类。    
 `Sun`的`JDK`的源码下载在[这里](http://download.java.net/openjdk/jdk7/)，厂商相关`Java`类在目录`jdk/src/share/classes`下。
@@ -148,6 +148,7 @@ Land
 * [IBM DeveloperWorks - Understanding the Java ClassLoader](http://www6.software.ibm.com/developerworks/education/j-classloader/j-classloader-a4.pdf)
 * [IBM DeveloperWorks - Java programming dynamics, Part 1: Java classes and class loading](https://www.ibm.com/developerworks/library/j-dyn0429/)，中文版在：[Java编程的动态性，第 1 部分: 类和类装入](http://www.ibm.com/developerworks/cn/java/j-dyn0429/)    
 [Java programming dynamics series](http://www.ibm.com/developerworks/views/java/libraryview.jsp?search_by=Java+dynamics)，这个系列的中文版[Java编程的动态性](https://www.ibm.com/developerworks/cn/views/java/libraryview.jsp?type_by=%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0&view_by=search&search_by=Java+%E7%BC%96%E7%A8%8B%E7%9A%84%E5%8A%A8%E6%80%81%E6%80%A7)
+* [onjava.com - Internals of Java Class Loading](http://www.onjava.com/pub/a/onjava/2005/01/26/classloading.html)
 * [IBM DeveloperWorks - Demystifying class loading problems series](http://www.ibm.com/developerworks/views/java/libraryview.jsp?search_by=demystifying+class+loading+problems)
 * [IBM Java Diagnostics Guide - Class loading](http://publib.boulder.ibm.com/infocenter/javasdk/v5r0/index.jsp?topic=%2Fcom.ibm.java.doc.diagnostics.50%2Fdiag%2Funderstanding%2Fclass_loader.html)
 * [Getting Started with Javassist - Class Loader](http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/tutorial/tutorial.html#load)
