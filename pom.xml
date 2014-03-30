@@ -25,6 +25,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<skip_maven_deploy>false</skip_maven_deploy>
 	</properties>
 
 	<dependencies>
@@ -69,6 +70,13 @@
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>${skip_maven_deploy}</skip>
 				</configuration>
 			</plugin>
 		</plugins>

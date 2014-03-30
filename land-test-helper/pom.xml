@@ -12,6 +12,10 @@
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
+	<properties>
+		<skip_maven_deploy>true</skip_maven_deploy>
+	</properties>
+
 	<modules>
 		<module>land-test-helper-common</module>
 		<module>land-test-helper-api</module>
