@@ -3,6 +3,7 @@ package com.oldratlee.land;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,10 +23,10 @@ public class LandClassLoader extends URLClassLoader {
 
     private final Map<DelegateType, List<String>> delegateConfig;
 
-    LandClassLoader(Map<DelegateType, List<String>> delegateConfig, URL[] urls) {
+    public LandClassLoader(Map<DelegateType, List<String>> delegateConfig, URL[] urls) {
         super(urls);
         if (delegateConfig == null) {
-            throw new NullPointerException("delegateConfig is null!");
+            delegateConfig = new HashMap<>();
         }
         this.delegateConfig = delegateConfig;
     }
@@ -46,7 +47,7 @@ public class LandClassLoader extends URLClassLoader {
     public LandClassLoader(Map<DelegateType, List<String>> delegateConfig, URL[] urls, ClassLoader parent) {
         super(urls, parent);
         if (delegateConfig == null) {
-            throw new NullPointerException("delegateConfig is null!");
+            delegateConfig = new HashMap<>();
         }
         this.delegateConfig = delegateConfig;
     }
@@ -106,7 +107,7 @@ public class LandClassLoader extends URLClassLoader {
                             } catch (ClassNotFoundException e) {
                                 // ClassNotFoundException thrown if class not found
                             }
-                            if (parent != getSystemClassLoader()) {
+                            if (c == null && parent != getSystemClassLoader()) {
                                 try {
                                     c = parent.loadClass(name);
                                 } catch (ClassNotFoundException e) {
@@ -147,13 +148,9 @@ public class LandClassLoader extends URLClassLoader {
 
     static boolean match(String name, String m) {
         // TODO check illegal matches!
-        if (name.equals(m)) {
-            return true;
-        }
-        if (m.endsWith("..") && name.startsWith(m.substring(0, m.length() - 1))) {
-            return true;
-        }
-        return m.endsWith(".") && name.startsWith(m) && !name.substring(m.length() + 1).contains(".");
+        return name.equals(m)
+                || m.endsWith("..") && name.startsWith(m.substring(0, m.length() - 1))
+                || m.endsWith(".") && name.startsWith(m) && !name.substring(m.length() + 1).contains(".");
     }
 
     @Override
