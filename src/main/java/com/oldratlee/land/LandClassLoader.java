@@ -13,7 +13,11 @@ import java.util.Map;
  */
 public class LandClassLoader extends URLClassLoader {
     public static enum DelegateType {
-        NONE, CHILD_ONLY, PARENT_ONLY, PARENT_CHILD, CHILD_PARENT
+        NONE,
+        CHILD_ONLY,
+        PARENT_ONLY,
+        PARENT_CHILD,
+        CHILD_PARENT
     }
 
     private final Map<DelegateType, List<String>> delegateConfig;
@@ -65,7 +69,7 @@ public class LandClassLoader extends URLClassLoader {
                 }
 
                 if (c == null) {
-                    DelegateType delegateType = findDelegateType(name);
+                    DelegateType delegateType = findDelegateType(delegateConfig, name);
                     ClassLoader parent = getParent();
                     switch (delegateType) {
                         case NONE:
@@ -123,28 +127,34 @@ public class LandClassLoader extends URLClassLoader {
         }
     }
 
-
-    DelegateType findDelegateType(String name) {
+    static DelegateType findDelegateType(Map<DelegateType, List<String>> delegateConfig, String name) {
         for (Map.Entry<DelegateType, List<String>> entry : delegateConfig.entrySet()) {
-            if (contains(name, entry.getValue())) {
+            if (match(name, entry.getValue())) {
                 return entry.getKey();
             }
         }
         return DelegateType.PARENT_CHILD;
     }
 
-    static boolean contains(String name, List<String> matches) {
+    static boolean match(String name, List<String> matches) {
         for (String m : matches) {
-            // TODO check illegal matches!
-            if (name.equals(m)) {
+            if (match(name, m)) {
                 return true;
             }
-            if (m.endsWith("..") && name.startsWith(m.substring(0, m.length() - 1))) {
-                return true;
-            }
-            if (m.endsWith(".") && name.startsWith(m) && !name.substring(m.length() + 1).contains(".")) {
-                return true;
-            }
+        }
+        return false;
+    }
+
+    static boolean match(String name, String m) {
+        // TODO check illegal matches!
+        if (name.equals(m)) {
+            return true;
+        }
+        if (m.endsWith("..") && name.startsWith(m.substring(0, m.length() - 1))) {
+            return true;
+        }
+        if (m.endsWith(".") && name.startsWith(m) && !name.substring(m.length() + 1).contains(".")) {
+            return true;
         }
         return false;
     }
