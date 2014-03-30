@@ -69,7 +69,7 @@ public class LandClassLoader extends URLClassLoader {
                 }
 
                 if (c == null) {
-                    DelegateType delegateType = findDelegateType(delegateConfig, name);
+                    DelegateType delegateType = findDelegateType(name, delegateConfig);
                     ClassLoader parent = getParent();
                     switch (delegateType) {
                         case NONE:
@@ -127,7 +127,7 @@ public class LandClassLoader extends URLClassLoader {
         }
     }
 
-    static DelegateType findDelegateType(Map<DelegateType, List<String>> delegateConfig, String name) {
+    static DelegateType findDelegateType(String name, Map<DelegateType, List<String>> delegateConfig) {
         for (Map.Entry<DelegateType, List<String>> entry : delegateConfig.entrySet()) {
             if (match(name, entry.getValue())) {
                 return entry.getKey();
@@ -153,10 +153,7 @@ public class LandClassLoader extends URLClassLoader {
         if (m.endsWith("..") && name.startsWith(m.substring(0, m.length() - 1))) {
             return true;
         }
-        if (m.endsWith(".") && name.startsWith(m) && !name.substring(m.length() + 1).contains(".")) {
-            return true;
-        }
-        return false;
+        return m.endsWith(".") && name.startsWith(m) && !name.substring(m.length() + 1).contains(".");
     }
 
     @Override
