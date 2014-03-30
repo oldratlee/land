@@ -161,6 +161,6 @@ public class LandClassLoader extends URLClassLoader {
 
     @Override
     public String toString() {
-        return super.toString() + " urls: " + Arrays.toString(getURLs());
+        return LandClassLoader.class.getSimpleName() + "(urls: " + Arrays.toString(getURLs()) + ")";
     }
 }
