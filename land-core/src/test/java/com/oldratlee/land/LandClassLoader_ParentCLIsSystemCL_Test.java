@@ -9,7 +9,7 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static com.oldratlee.land.Contants.lib_common;
+import static com.oldratlee.land.Constants.lib_common;
 import static com.oldratlee.land.LandClassLoader.DelegateType.NONE;
 import static com.oldratlee.land.LandClassLoader.DelegateType.PARENT_ONLY;
 import static com.oldratlee.land.util.Utils.invokeMain;

@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.oldratlee</groupId>
-	<artifactId>land</artifactId>
+	<artifactId>land-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 	<inceptionYear>2014</inceptionYear>
 
@@ -17,6 +17,11 @@
 			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
+	
+	<modules>
+		<module>land-test-helper</module>
+		<module>land-core</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

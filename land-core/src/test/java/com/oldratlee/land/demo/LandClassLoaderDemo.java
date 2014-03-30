@@ -1,8 +1,8 @@
 package com.oldratlee.land.demo;
 
+import com.oldratlee.land.Constants;
 import com.oldratlee.land.LandClassLoader;
 
-import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,9 +24,7 @@ public class LandClassLoaderDemo {
         Map<DelegateType, List<String>> delegateConfig = new HashMap<>();
         delegateConfig.put(PARENT_ONLY, Arrays.asList("com.foo.p2.", "com.foo.p3.."));
 
-        ClassLoader classLoader = new LandClassLoader(delegateConfig, new URL[]{
-                new File("ut-jars/land-test-common-0.0.1-SNAPSHOT.jar").toURI().toURL()
-        });
+        ClassLoader classLoader = new LandClassLoader(delegateConfig, new URL[]{Constants.lib_common});
 
         invokeMain(classLoader.loadClass("com.foo.Foo"));
         invokeMain(classLoader.loadClass("com.foo.p1.P1C1"));

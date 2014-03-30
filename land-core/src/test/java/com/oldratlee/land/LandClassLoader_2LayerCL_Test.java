@@ -8,13 +8,13 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import static com.oldratlee.land.Contants.lib_api;
-import static com.oldratlee.land.Contants.lib_class_api;
-import static com.oldratlee.land.Contants.lib_class_impl;
-import static com.oldratlee.land.Contants.lib_common;
-import static com.oldratlee.land.Contants.lib_impl;
-import static com.oldratlee.land.Contants.lib_package_api;
-import static com.oldratlee.land.Contants.lib_package_impl;
+import static com.oldratlee.land.Constants.lib_api;
+import static com.oldratlee.land.Constants.lib_class_api;
+import static com.oldratlee.land.Constants.lib_class_impl;
+import static com.oldratlee.land.Constants.lib_common;
+import static com.oldratlee.land.Constants.lib_impl;
+import static com.oldratlee.land.Constants.lib_package_api;
+import static com.oldratlee.land.Constants.lib_package_impl;
 import static com.oldratlee.land.LandClassLoader.DelegateType.CHILD_ONLY;
 import static com.oldratlee.land.LandClassLoader.DelegateType.CHILD_PARENT;
 import static com.oldratlee.land.LandClassLoader.DelegateType.NONE;
