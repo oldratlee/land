@@ -1,6 +1,8 @@
 Land
 =================================================
 
+[![Build Status](https://travis-ci.org/oldratlee/classloader-playground.svg?branch=master)](https://travis-ci.org/oldratlee/classloader-playground)
+
 :point_right: 一个简单的基于`ClassLoader`用于依赖隔离的容器实现。  
 \# 在`Java`中依赖主要是`Jar`。
 
