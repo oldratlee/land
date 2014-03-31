@@ -21,6 +21,9 @@ public class Constants {
             lib_common = new File("../land-test-helper/land-test-helper-common/target/land-test-helper-common-0.0.1-SNAPSHOT.jar").getCanonicalFile().toURI().toURL();
             lib_api = new File("../land-test-helper/land-test-helper-api/target/land-test-helper-api-0.0.1-SNAPSHOT.jar").getCanonicalFile().toURI().toURL();
             lib_impl = new File("../land-test-helper/land-test-helper-impl/target/land-test-helper-impl-0.0.1-SNAPSHOT.jar").getCanonicalFile().toURI().toURL();
+
+            System.out.printf("lib_common: %s\nlib_lib_api: %s\nlib_impl: %s",
+                    lib_common, lib_api, lib_impl);
         } catch (Exception e) {
             throw new RuntimeException();
         }
