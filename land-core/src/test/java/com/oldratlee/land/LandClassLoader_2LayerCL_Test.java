@@ -2,6 +2,7 @@ package com.oldratlee.land;
 
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -219,5 +220,22 @@ public class LandClassLoader_2LayerCL_Test {
         Class<?> implClass = child.loadClass(lib_class_impl);
         assertEquals(child, implClass.getClassLoader());
         invokeMain(implClass);
+
+        System.out.println();
+        System.out.println("====================================");
+        System.out.println(parent.getResource("test-common.properties"));
+        System.out.println("====================================");
+        Enumeration<URL> resources = parent.getResources("test-common.properties");
+        while (resources.hasMoreElements()) {
+            System.out.println(resources.nextElement());
+        }
+        System.out.println();
+        System.out.println("====================================");
+        System.out.println(child.getResource("test-common.properties"));
+        System.out.println("====================================");
+        resources = child.getResources("test-common.properties");
+        while (resources.hasMoreElements()) {
+            System.out.println(resources.nextElement());
+        }
     }
 }
