@@ -59,74 +59,73 @@ public class LandClassLoader extends URLClassLoader {
     @Override
     protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
         synchronized (getClassLoadingLock(name)) {
-            // First, check if the class has already been loaded
-            Class c = findLoadedClass(name);
-            if (c == null) {
-                // Check System Loader first
-                try {
-                    c = getSystemClassLoader().loadClass(name);
-                } catch (ClassNotFoundException e) {
-                    // ClassNotFoundException thrown if class not found
-                }
-
-                if (c == null) {
-                    DelegateType delegateType = findDelegateType(name, delegateConfig);
-                    ClassLoader parent = getParent();
-                    switch (delegateType) {
-                        case NONE:
-                            throw new ClassNotFoundException("class " + name + "(NONE) is forbidden by land config!");
-                        case PARENT_ONLY:
-                            if (parent == getSystemClassLoader()) {
-                                throw new ClassNotFoundException("class " + name + "(PARENT_ONLY) not found in parent class loader");
-                            } else {
-                                // TODO improve exception message
-                                c = parent.loadClass(name);
-                            }
-                            break;
-                        case CHILD_ONLY:
-                            // TODO improve exception message
-                            c = findClass(name);
-                            break;
-                        case PARENT_CHILD:
-                            // parent does not load this class before
-                            if (parent != getSystemClassLoader()) {
-                                try {
-                                    c = parent.loadClass(name);
-                                } catch (ClassNotFoundException e) {
-                                    // ClassNotFoundException thrown if class not found
-                                }
-                            }
-                            if (null == c) {
-                                // TODO improve exception message
-                                c = findClass(name);
-                            }
-                            break;
-                        case CHILD_PARENT:
-                            try {
-                                c = findClass(name);
-                            } catch (ClassNotFoundException e) {
-                                // ClassNotFoundException thrown if class not found
-                            }
-                            if (c == null && parent != getSystemClassLoader()) {
-                                try {
-                                    c = parent.loadClass(name);
-                                } catch (ClassNotFoundException e) {
-                                    // ClassNotFoundException thrown if class not found
-                                }
-                            }
-                            if (null == c) {
-                                throw new ClassNotFoundException("class " + name + "(CHILD_PARENT) not found in parent class loader");
-                            }
-                            break;
-                    }
-                }
-            }
+            Class c = getClass0(name);
             if (resolve) {
                 resolveClass(c);
             }
             return c;
         }
     }
+
+    private Class getClass0(String name) throws ClassNotFoundException {
+        // 0. check if the class has already been loaded
+        Class c = findLoadedClass(name);
+        if (c != null) {
+            return c;
+        }
+
+        // 1. check if the class is in system class loader
+        try {
+            return getSystemClassLoader().loadClass(name);
+        } catch (ClassNotFoundException e) {
+            // ClassNotFoundException thrown if class not found
+        }
+
+        // 2. get class according to delegate config
+        DelegateType delegateType = findDelegateType(name, delegateConfig);
+        ClassLoader parent = getParent();
+        switch (delegateType) {
+            case NONE:
+                throw new ClassNotFoundException("class " + name + "(NONE) is forbidden by land config!");
+            case PARENT_ONLY:
+                if (parent == getSystemClassLoader()) {
+                    throw new ClassNotFoundException("class " + name + "(PARENT_ONLY) not found in parent class loader");
+                } else {
+                    // TODO improve exception message
+                    return parent.loadClass(name);
+                }
+            case CHILD_ONLY:
+                // TODO improve exception message
+                return findClass(name);
+            case PARENT_CHILD:
+                // parent does not load this class before
+                if (parent != getSystemClassLoader()) {
+                    try {
+                        return parent.loadClass(name);
+                    } catch (ClassNotFoundException e) {
+                        // ClassNotFoundException thrown if class not found
+                    }
+                }
+                return findClass(name);
+            case CHILD_PARENT:
+                try {
+                    return findClass(name);
+                } catch (ClassNotFoundException e) {
+                    // ClassNotFoundException thrown if class not found
+                }
+                if (parent != getSystemClassLoader()) {
+                    try {
+                        return parent.loadClass(name);
+                    } catch (ClassNotFoundException e) {
+                        // ClassNotFoundException thrown if class not found
+                    }
+                }
+                throw new ClassNotFoundException("class " + name + "(CHILD_PARENT) not found in parent class loader");
+            default:
+                throw new IllegalStateException("Unsupported delegate config!");
+        }
+    }
+
 
     static DelegateType findDelegateType(String name, Map<DelegateType, List<String>> delegateConfig) {
         for (Map.Entry<DelegateType, List<String>> entry : delegateConfig.entrySet()) {
