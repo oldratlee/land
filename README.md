@@ -46,10 +46,10 @@ Land
     * 子优先。【Child-Parent】    
     这种委托关系比较复杂，有引起类版本混乱的风险！:bomb:     
     细节原因看了后面参考资料就清楚了，这里只说一个简单例子：    
-    子里有类`Wheel`，父里有`Car`、`Wheel`，`Car`引用了`Wheel`。    
+    子里有类`Wheel`；父里有类`Car`、`Wheel`；类`Car`引用了类`Wheel`。    
     子加载类`Car`里通过实际是父来加载（子中没有这个类），返回的`Car`所引用`Wheel`是用`Car`的`ClassLoader`即父来加载。    
     子中直接使用`Wheel`时，由子来加载（子里有`Wheel`类）。    
-    结果`Car`引用的`Wheel`和子直接使用的`Wheel`的`ClassLoader`不同，即类型不兼容，看起来正确的赋值会抛出的`ClassCastException`！    
+    结果`Car`引用的类`Wheel`和子直接使用的类`Wheel`的`ClassLoader`不同，即类型不兼容，看起来正确的赋值会抛出的`ClassCastException`！    
     实际应用中应该 ***避免***这种委托关系。 :no_good:
 
 上面【11】的情况分成2个子Case，合起来一共有5种情况。
