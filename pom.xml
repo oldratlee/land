@@ -21,6 +21,7 @@
 	<modules>
 		<module>land-test-helper</module>
 		<module>land-core</module>
+		<module>land-main-runner</module>
 	</modules>
 
 	<properties>
@@ -29,18 +30,6 @@
 	</properties>
 
 	<dependencies>
-		<!-- logging libs -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.6</version>
-			<scope>provided</scope>
-		</dependency>
 		<!-- Testing libs -->
 		<dependency>
 			<groupId>junit</groupId>

@@ -37,13 +37,13 @@ public class LandClassLoader_2LayerCL_Test {
         parentDelegateConfig.put(CHILD_ONLY, Arrays.asList("com.oldratlee.land."));
         ClassLoader parent = new LandClassLoader(parentDelegateConfig, new URL[]{lib_common});
 
-        assertEquals(ClassLoader.getSystemClassLoader(), parent.loadClass("com.oldratlee.land.LandLauncher").getClassLoader());
+        assertEquals(ClassLoader.getSystemClassLoader(), parent.loadClass("com.oldratlee.land.DelegateType").getClassLoader());
 
         Map<DelegateType, List<String>> childDelegateConfig = new HashMap<>();
         childDelegateConfig.put(NONE, Arrays.asList("com.oldratlee.land."));
         ClassLoader child = new LandClassLoader(childDelegateConfig, new URL[]{lib_common}, parent);
 
-        assertEquals(ClassLoader.getSystemClassLoader(), child.loadClass("com.oldratlee.land.LandLauncher").getClassLoader());
+        assertEquals(ClassLoader.getSystemClassLoader(), child.loadClass("com.oldratlee.land.DelegateType").getClassLoader());
     }
 
     @Test
