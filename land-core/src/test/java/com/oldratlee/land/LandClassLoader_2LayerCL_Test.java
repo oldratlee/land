@@ -34,13 +34,13 @@ public class LandClassLoader_2LayerCL_Test {
     @Test
     public void test_ClassInSystemCL_cannot_overwrite() throws Exception {
         Map<DelegateType, List<String>> parentDelegateConfig = new HashMap<>();
-        parentDelegateConfig.put(CHILD_ONLY, Arrays.asList("com.oldratlee.land."));
+        parentDelegateConfig.put(CHILD_ONLY, Arrays.asList("com.oldratlee.land.*"));
         ClassLoader parent = new LandClassLoader(parentDelegateConfig, new URL[]{lib_common});
 
         assertEquals(ClassLoader.getSystemClassLoader(), parent.loadClass("com.oldratlee.land.DelegateType").getClassLoader());
 
         Map<DelegateType, List<String>> childDelegateConfig = new HashMap<>();
-        childDelegateConfig.put(NONE, Arrays.asList("com.oldratlee.land."));
+        childDelegateConfig.put(NONE, Arrays.asList("com.oldratlee.land.*"));
         ClassLoader child = new LandClassLoader(childDelegateConfig, new URL[]{lib_common}, parent);
 
         assertEquals(ClassLoader.getSystemClassLoader(), child.loadClass("com.oldratlee.land.DelegateType").getClassLoader());
@@ -168,9 +168,9 @@ public class LandClassLoader_2LayerCL_Test {
 
         Map<DelegateType, List<String>> delegateConfig = new HashMap<>();
         delegateConfig.put(PARENT_CHILD, Arrays.asList(
-                "com.foo.p1.",
-                lib_package_api + ".",
-                lib_package_impl + "."));
+                "com.foo.p1.*",
+                lib_package_api + ".*",
+                lib_package_impl + ".*"));
         ClassLoader child = new LandClassLoader(delegateConfig, new URL[]{lib_common, lib_impl}, parent);
 
         // In Child, default parent-child
