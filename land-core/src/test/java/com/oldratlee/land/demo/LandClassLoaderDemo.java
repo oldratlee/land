@@ -1,6 +1,7 @@
 package com.oldratlee.land.demo;
 
 import com.oldratlee.land.Constants;
+import com.oldratlee.land.DelegateType;
 import com.oldratlee.land.LandClassLoader;
 
 import java.net.URL;
@@ -9,8 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.oldratlee.land.LandClassLoader.DelegateType;
-import static com.oldratlee.land.LandClassLoader.DelegateType.PARENT_ONLY;
+import static com.oldratlee.land.DelegateType.PARENT_ONLY;
 import static com.oldratlee.land.util.Utils.invokeMain;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;

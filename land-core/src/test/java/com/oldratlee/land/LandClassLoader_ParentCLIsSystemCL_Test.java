@@ -10,8 +10,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static com.oldratlee.land.Constants.lib_common;
-import static com.oldratlee.land.LandClassLoader.DelegateType.NONE;
-import static com.oldratlee.land.LandClassLoader.DelegateType.PARENT_ONLY;
+import static com.oldratlee.land.DelegateType.NONE;
+import static com.oldratlee.land.DelegateType.PARENT_ONLY;
 import static com.oldratlee.land.util.Utils.invokeMain;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
@@ -33,9 +33,9 @@ public class LandClassLoader_ParentCLIsSystemCL_Test {
 
     @Test
     public void test_NONE() throws Exception {
-        Map<LandClassLoader.DelegateType, List<String>> delegateConfig = new HashMap<>();
+        Map<DelegateType, List<String>> delegateConfig = new HashMap<>();
         delegateConfig.put(NONE, Arrays.asList(
-                "com.foo.p1.", LandClassLoader_ParentCLIsSystemCL_Test.class.getPackage().getName() + "."));
+                "com.foo.p1.*", LandClassLoader_ParentCLIsSystemCL_Test.class.getPackage().getName() + ".*"));
 
         ClassLoader classLoader = new LandClassLoader(delegateConfig, new URL[]{lib_common});
 
@@ -68,9 +68,9 @@ public class LandClassLoader_ParentCLIsSystemCL_Test {
 
     @Test
     public void test_ParentOnly() throws Exception {
-        Map<LandClassLoader.DelegateType, List<String>> delegateConfig = new HashMap<>();
+        Map<DelegateType, List<String>> delegateConfig = new HashMap<>();
         delegateConfig.put(PARENT_ONLY, Arrays.asList(
-                "com.foo.p1.", LandClassLoader_ParentCLIsSystemCL_Test.class.getPackage().getName() + "."));
+                "com.foo.p1.*", LandClassLoader_ParentCLIsSystemCL_Test.class.getPackage().getName() + ".*"));
 
         ClassLoader classLoader = new LandClassLoader(delegateConfig, new URL[]{lib_common});
 

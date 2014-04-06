@@ -1,5 +1,8 @@
 package com.oldratlee.land;
 
+import com.oldratlee.land.matcher.DefaultLandMatcher;
+import com.oldratlee.land.matcher.Matcher;
+
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
@@ -13,42 +16,53 @@ import java.util.Map;
  * @author ding.lid
  */
 public class LandClassLoader extends URLClassLoader {
-    public static enum DelegateType {
-        NONE,
-        CHILD_ONLY,
-        PARENT_ONLY,
-        PARENT_CHILD,
-        CHILD_PARENT
-    }
-
     private final Map<DelegateType, List<String>> delegateConfig;
+    private final Matcher matcher;
 
     public LandClassLoader(Map<DelegateType, List<String>> delegateConfig, URL[] urls) {
-        super(urls);
-        if (delegateConfig == null) {
-            delegateConfig = new HashMap<>();
-        }
-        this.delegateConfig = delegateConfig;
+        this(delegateConfig, urls, new DefaultLandMatcher(), ClassLoader.getSystemClassLoader());
+    }
+
+    public LandClassLoader(Map<DelegateType, List<String>> delegateConfig, URL[] urls, ClassLoader parent) {
+        this(delegateConfig, urls, new DefaultLandMatcher(), parent);
+    }
+
+    public LandClassLoader(Map<DelegateType, List<String>> delegateConfig, URL[] urls, Matcher matcher) {
+        this(delegateConfig, urls, matcher, ClassLoader.getSystemClassLoader());
     }
 
     /**
-     * Delegate config format, key is {@link com.oldratlee.land.LandClassLoader.DelegateType}, value is string list, item can be below case:
+     * Delegate config format, key is {@link DelegateType}, value is string list, item can be below case:
      * <p/>
      * <ol>
      * <li>specify one class, content is a full qualified class name. example: {@code "com.foo.package1.Class1"}, {@code "com.foo.package1.Class2$InnerClass2"}</li>
-     * <li>specify a package, content is a full qualified package name end by a dot. example: {@code "com.foo.package2."}</li>
-     * <li>specify a package and its sub packages, content is a full qualified package name end by two dot. example: {@code "com.foo.package3.."}</li>
+     * <li>specify a package, content is a full qualified package name end by a dot. example: {@code "com.foo.package2.*"}</li>
+     * <li>specify a package and its sub packages, content is a full qualified package name end by two dot. example: {@code "com.foo.package3.**"}</li>
      * </ol>
+     * <p/>
+     * Delegate config example:
+     * <pre><code>{
+     *     NONE : [com.foo1.p0.ClassA, com.foo1.p1.ClassB, com.foo1.p2.*, com.foo1.p3.**],
+     *     CHILD_ONLY : [com.foo2.p0.*Model, com.foo2.p1.*Impl, com.foo2.p2.*Spi*]
+     * }</code></pre>
      *
      * @param delegateConfig delegate config.
      * @param urls           class path
+     * @param matcher        class name matcher
      * @param parent         parent classloader
      */
-    public LandClassLoader(Map<DelegateType, List<String>> delegateConfig, URL[] urls, ClassLoader parent) {
+    public LandClassLoader(Map<DelegateType, List<String>> delegateConfig, URL[] urls, Matcher matcher, ClassLoader parent) {
         super(urls, parent);
+
         if (delegateConfig == null) {
             delegateConfig = new HashMap<>();
         }
+        for (Map.Entry<DelegateType, List<String>> typeEntry : delegateConfig.entrySet()) {
+            for (String pattern : typeEntry.getValue()) {
+                matcher.validate(pattern);
+            }
+        }
+        this.matcher = matcher;
         this.delegateConfig = delegateConfig;
     }
 
@@ -57,9 +71,9 @@ public class LandClassLoader extends URLClassLoader {
     }
 
     @Override
-    protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-        synchronized (getClassLoadingLock(name)) {
-            Class c = getClass0(name);
+    protected Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
+        synchronized (getClassLoadingLock(className)) {
+            Class c = loadClass0(className);
             if (resolve) {
                 resolveClass(c);
             }
@@ -67,89 +81,81 @@ public class LandClassLoader extends URLClassLoader {
         }
     }
 
-    private Class getClass0(String name) throws ClassNotFoundException {
+    private Class loadClass0(String className) throws ClassNotFoundException {
         // 0. check if the class has already been loaded
-        Class c = findLoadedClass(name);
+        Class c = findLoadedClass(className);
         if (c != null) {
             return c;
         }
 
         // 1. check if the class is in system class loader
         try {
-            return getSystemClassLoader().loadClass(name);
+            return getSystemClassLoader().loadClass(className);
         } catch (ClassNotFoundException e) {
             // ClassNotFoundException thrown if class not found
         }
 
         // 2. get class according to delegate config
-        DelegateType delegateType = findDelegateType(name, delegateConfig);
+        DelegateType delegateType = findDelegateTypeInDelegateConfigs(className, delegateConfig, matcher);
         ClassLoader parent = getParent();
         switch (delegateType) {
             case NONE:
-                throw new ClassNotFoundException("class " + name + "(NONE) is forbidden by land config!");
+                throw new ClassNotFoundException("class " + className + "(NONE) is forbidden by land config!");
             case PARENT_ONLY:
                 if (parent == getSystemClassLoader()) {
-                    throw new ClassNotFoundException("class " + name + "(PARENT_ONLY) not found in parent class loader");
+                    throw new ClassNotFoundException("class " + className + "(PARENT_ONLY) not found in parent class loader");
                 } else {
                     // TODO improve exception message
-                    return parent.loadClass(name);
+                    return parent.loadClass(className);
                 }
             case CHILD_ONLY:
                 // TODO improve exception message
-                return findClass(name);
+                return findClass(className);
             case PARENT_CHILD:
                 // parent does not load this class before
                 if (parent != getSystemClassLoader()) {
                     try {
-                        return parent.loadClass(name);
+                        return parent.loadClass(className);
                     } catch (ClassNotFoundException e) {
                         // ClassNotFoundException thrown if class not found
                     }
                 }
-                return findClass(name);
+                return findClass(className);
             case CHILD_PARENT:
                 try {
-                    return findClass(name);
+                    return findClass(className);
                 } catch (ClassNotFoundException e) {
                     // ClassNotFoundException thrown if class not found
                 }
                 if (parent != getSystemClassLoader()) {
                     try {
-                        return parent.loadClass(name);
+                        return parent.loadClass(className);
                     } catch (ClassNotFoundException e) {
                         // ClassNotFoundException thrown if class not found
                     }
                 }
-                throw new ClassNotFoundException("class " + name + "(CHILD_PARENT) not found in parent class loader");
+                throw new ClassNotFoundException("class " + className + "(CHILD_PARENT) not found in parent class loader");
             default:
-                throw new IllegalStateException("Unsupported delegate config!");
+                throw new IllegalStateException("Unsupported delegate config " + delegateType);
         }
     }
 
-
-    static DelegateType findDelegateType(String name, Map<DelegateType, List<String>> delegateConfig) {
+    static DelegateType findDelegateTypeInDelegateConfigs(String className, Map<DelegateType, List<String>> delegateConfig, Matcher matcher) {
         for (Map.Entry<DelegateType, List<String>> entry : delegateConfig.entrySet()) {
-            if (match(name, entry.getValue())) {
+            if (matchPatterns(className, entry.getValue(), matcher)) {
                 return entry.getKey();
             }
         }
         return DelegateType.PARENT_CHILD;
     }
 
-    static boolean match(String name, List<String> matches) {
-        for (String m : matches) {
-            if (match(name, m)) {
+    static boolean matchPatterns(String className, List<String> patterns, Matcher matcher) {
+        for (String pattern : patterns) {
+            if (matcher.match(className, pattern)) {
                 return true;
             }
         }
         return false;
-    }
-
-    static boolean match(String name, String m) {
-        // TODO check illegal matches!
-        return name.equals(m)
-                || m.endsWith("..") && name.startsWith(m.substring(0, m.length() - 1))
-                || m.endsWith(".") && name.startsWith(m) && !name.substring(m.length() + 1).contains(".");
     }
 
     @Override

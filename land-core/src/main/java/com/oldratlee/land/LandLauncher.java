@@ -15,6 +15,6 @@ public class LandLauncher {
     }
 
     public ClassLoader createClassLoader(final URL[] urls) {
-        return new LandClassLoader(new HashMap<LandClassLoader.DelegateType, List<String>>(), urls);
+        return new LandClassLoader(new HashMap<DelegateType, List<String>>(), urls);
     }
 }
