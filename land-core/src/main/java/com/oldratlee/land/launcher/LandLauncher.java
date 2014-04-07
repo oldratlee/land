@@ -2,7 +2,6 @@ package com.oldratlee.land.launcher;
 
 import com.oldratlee.land.DelegateType;
 import com.oldratlee.land.LandClassLoader;
-import com.oldratlee.land.matcher.DefaultLandMatcher;
 import com.oldratlee.land.matcher.Matcher;
 
 import java.io.File;
@@ -11,6 +10,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,6 +31,8 @@ public class LandLauncher {
     public static final String LAND_APP_DELEGATE_CONFIGS_PREFIX = "land.app.%s.delegate.configs";
     public static final String LAND_APP_MAIN_CLASS_PREFIX = "land.app.%s.main.class";
     public static final String LAND_APP_MAIN_ARGS_PREFIX = "land.app.%s.main.args";
+
+    public static final String MAIN_METHOD_NAME = "main";
 
     private static final LandLauncher launcher = new LandLauncher();
 
@@ -68,20 +70,14 @@ public class LandLauncher {
         }
 
         for (Map.Entry<String, LandClassLoader> entry : app2LandClassLoaderMap.entrySet()) {
-            String appName = entry.getKey();
-            LandClassLoader appClassLoader = entry.getValue();
-
-            String mainClassName = System.getProperty(String.format(LAND_APP_MAIN_CLASS_PREFIX, appName));
-            String appArgs = System.getProperty(String.format(LAND_APP_MAIN_ARGS_PREFIX, appName));
-
-            invokeMain(appName, appClassLoader, mainClassName, appArgs);
+            invokeAppMain(entry.getKey(), entry.getValue());
         }
     }
 
     static Matcher getMatcher() {
         String matcherClassName = System.getProperty(LAND_MATCHER_CLASS);
-        if (matcherClassName == null) {
-            return new DefaultLandMatcher();
+        if (matcherClassName == null || matcherClassName.trim().length() ==0) {
+            return null;
         }
 
         try {
@@ -102,7 +98,7 @@ public class LandLauncher {
         for (String delegateConfig : delegateConfigArray) {
             String[] delegateTypeAndPatterns = delegateConfig.trim().split("\\s*=\\s*");
             if (delegateConfigs.length() != 2) {
-                throw new IllegalStateException("Wrong delegate type and pattern: " + delegateTypeAndPatterns);
+                throw new IllegalStateException("Wrong delegate type and pattern: " + Arrays.toString(delegateTypeAndPatterns));
             }
             DelegateType delegateType = DelegateType.valueOf(delegateConfigArray[0]);
             String patterns = delegateConfigArray[1];
@@ -137,7 +133,11 @@ public class LandLauncher {
                 ret.add(file.getCanonicalFile().toURI().toURL());
                 continue;
             }
-            for (File subFile : file.listFiles()) {
+            File[] subFiles = file.listFiles();
+            if (null == subFiles) {
+                throw new IllegalStateException("Fail to list files from dir " + file);
+            }
+            for (File subFile : subFiles) {
                 if (subFile.isDirectory()) {
                     ret.add(subFile.getCanonicalFile().toURI().toURL());
                 } else if (!file.isDirectory() && libPath.endsWith(".jar")) {
@@ -146,34 +146,31 @@ public class LandLauncher {
             }
         }
 
-        return ret.toArray(new URL[0]);
+        return ret.toArray(new URL[ret.size()]);
     }
 
-    static void invokeMain(final String appName, ClassLoader appClassLoader, String mainClassName, String args) {
+    static void invokeAppMain(final String appName, ClassLoader appClassLoader) {
         try {
-            Class<?> mainClass = appClassLoader.loadClass(mainClassName);
-            final String[] argArray = args.split("\\s+");
+            String mainClassName = System.getProperty(String.format(LAND_APP_MAIN_CLASS_PREFIX, appName));
+            String appArgs = System.getProperty(String.format(LAND_APP_MAIN_ARGS_PREFIX, appName));
 
-            final Method mainMethod = mainClass.getMethod("main", new Class[]{String[].class});
+            Class<?> mainClass = appClassLoader.loadClass(mainClassName);
+            final String[] argArray = appArgs.split("\\s+"); // TODO argument can not contain space! 
+
+            final Method mainMethod = mainClass.getMethod(MAIN_METHOD_NAME, new Class[]{String[].class});
             int modifiers = mainMethod.getModifiers();
             if (!Modifier.isPublic(modifiers) || !Modifier.isStatic(modifiers)) {
-                throw new IllegalStateException(String.format("the main method of main class(%s) of App(%s) is NOT public static!", mainClassName, appName));
+                throw new IllegalStateException(String.format(
+                        "the main method of main class(%s) of App(%s) is NOT public static!",
+                        mainClassName, appName));
             }
 
-            Thread appMainThread = new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        mainMethod.invoke(null, argArray);
-                    } catch (Exception e) {
-                        throw new IllegalStateException(String.format("Exception to run app %s, cause: %s", appName, e.getMessage()), e);
-                    }
-                }
-            };
+            Thread appMainThread = new AppThread(mainMethod, argArray, appName);
             appMainThread.setContextClassLoader(appClassLoader);
             appMainThread.start();
         } catch (Exception e) {
             throw new IllegalStateException(String.format("Fail to load app %s, cause: %s", appName, e.getMessage()), e);
         }
     }
+
 }

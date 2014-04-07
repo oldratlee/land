@@ -20,15 +20,15 @@ public class LandClassLoader extends URLClassLoader {
     private final Matcher matcher;
 
     public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig) {
-        this(urls, delegateConfig, new DefaultLandMatcher(), ClassLoader.getSystemClassLoader());
+        this(urls, delegateConfig, null, null);
     }
 
     public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig, ClassLoader parent) {
-        this(urls, delegateConfig, new DefaultLandMatcher(), parent);
+        this(urls, delegateConfig, null, parent);
     }
 
     public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig, Matcher matcher) {
-        this(urls, delegateConfig, matcher, ClassLoader.getSystemClassLoader());
+        this(urls, delegateConfig, matcher, null);
     }
 
     /**
@@ -52,17 +52,17 @@ public class LandClassLoader extends URLClassLoader {
      * @param parent         parent classloader
      */
     public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig, Matcher matcher, ClassLoader parent) {
-        super(urls, parent);
+        super(urls, parent == null ? getSystemClassLoader() : parent);
 
         if (delegateConfig == null) {
             delegateConfig = new HashMap<>();
         }
+        this.matcher = matcher == null ? new DefaultLandMatcher() : matcher;
         for (Map.Entry<DelegateType, List<String>> typeEntry : delegateConfig.entrySet()) {
             for (String pattern : typeEntry.getValue()) {
-                matcher.validate(pattern);
+                this.matcher.validate(pattern);
             }
         }
-        this.matcher = matcher;
         this.delegateConfig = delegateConfig;
     }
 
