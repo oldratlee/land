@@ -13,7 +13,7 @@ package com.oldratlee.land.matcher;
  *
  * @author ding.lid
  */
-public class DefaultLandMatcher implements Matcher {
+public class DefaultLandMatcher implements LandMatcher {
     @Override
     public boolean match(String className, String pattern) {
         return matchExactlyFullQualifiedClassName(className, pattern) ||

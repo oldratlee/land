@@ -3,7 +3,7 @@ package com.oldratlee.land.matcher;
 /**
  * @author ding.lid
  */
-public interface Matcher {
+public interface LandMatcher {
     /**
      * @return {@code true} if class className match pattern, otherwise {@code false}
      */

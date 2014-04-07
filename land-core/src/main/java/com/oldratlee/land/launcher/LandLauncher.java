@@ -2,7 +2,7 @@ package com.oldratlee.land.launcher;
 
 import com.oldratlee.land.DelegateType;
 import com.oldratlee.land.LandClassLoader;
-import com.oldratlee.land.matcher.Matcher;
+import com.oldratlee.land.matcher.LandMatcher;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +48,7 @@ public class LandLauncher {
 
     public static void main(String[] args) throws IOException {
         ClassLoader appParentClassLoader = ClassLoader.getSystemClassLoader();
-        final Matcher matcher = getMatcher();
+        final LandMatcher matcher = getMatcher();
 
         if (System.getProperty(LAND_SHARED_LIB_DIR) != null && System.getProperty(LAND_SHARED_LIB_DIR).length() > 0) {
             Map<DelegateType, List<String>> sharedDelegateConfigs = convertDelegateConfigs(System.getProperty(LAND_SHARED_DELEGATE_CONFIGS));
@@ -74,7 +74,7 @@ public class LandLauncher {
         }
     }
 
-    static Matcher getMatcher() {
+    static LandMatcher getMatcher() {
         String matcherClassName = System.getProperty(LAND_MATCHER_CLASS);
         if (matcherClassName == null || matcherClassName.trim().length() ==0) {
             return null;
@@ -82,10 +82,11 @@ public class LandLauncher {
 
         try {
             Class<?> matcherClass = Class.forName(matcherClassName);
-            if (!Matcher.class.isAssignableFrom(matcherClass)) {
-                throw new IllegalStateException("Matcher class is not subclass of " + Matcher.class.getName());
+            if (!LandMatcher.class.isAssignableFrom(matcherClass)) {
+                throw new IllegalStateException("LandMatcher class " + matcherClassName +
+                        " is not subclass of " + LandMatcher.class.getName());
             }
-            return (Matcher) matcherClass.newInstance();
+            return (LandMatcher) matcherClass.newInstance();
         } catch (Exception e) {
             throw new IllegalStateException("Fail to init matcher " + matcherClassName + ", cause: " + e.getMessage(), e);
         }
@@ -172,5 +173,4 @@ public class LandLauncher {
             throw new IllegalStateException(String.format("Fail to load app %s, cause: %s", appName, e.getMessage()), e);
         }
     }
-
 }

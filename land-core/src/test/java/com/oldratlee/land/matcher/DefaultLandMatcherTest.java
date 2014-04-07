@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
  * @author ding.lid
  */
 public class DefaultLandMatcherTest {
-    Matcher matcher = new DefaultLandMatcher();
+    LandMatcher matcher = new DefaultLandMatcher();
     
     @Test
     public void testMatch_1() throws Exception {

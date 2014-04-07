@@ -1,7 +1,7 @@
 package com.oldratlee.land;
 
 import com.oldratlee.land.matcher.DefaultLandMatcher;
-import com.oldratlee.land.matcher.Matcher;
+import com.oldratlee.land.matcher.LandMatcher;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
  * @author ding.lid
  */
 public class LandClassLoaderTest {
-    Matcher matcher = new DefaultLandMatcher();
+    LandMatcher matcher = new DefaultLandMatcher();
 
     @Test
     public void testMatch_list() throws Exception {

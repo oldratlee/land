@@ -1,7 +1,7 @@
 package com.oldratlee.land;
 
 import com.oldratlee.land.matcher.DefaultLandMatcher;
-import com.oldratlee.land.matcher.Matcher;
+import com.oldratlee.land.matcher.LandMatcher;
 
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class LandClassLoader extends URLClassLoader {
     private final Map<DelegateType, List<String>> delegateConfig;
-    private final Matcher matcher;
+    private final LandMatcher matcher;
 
     public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig) {
         this(urls, delegateConfig, null, null);
@@ -27,7 +27,7 @@ public class LandClassLoader extends URLClassLoader {
         this(urls, delegateConfig, null, parent);
     }
 
-    public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig, Matcher matcher) {
+    public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig, LandMatcher matcher) {
         this(urls, delegateConfig, matcher, null);
     }
 
@@ -51,7 +51,7 @@ public class LandClassLoader extends URLClassLoader {
      * @param matcher        class name matcher
      * @param parent         parent classloader
      */
-    public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig, Matcher matcher, ClassLoader parent) {
+    public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig, LandMatcher matcher, ClassLoader parent) {
         super(urls, parent == null ? getSystemClassLoader() : parent);
 
         if (delegateConfig == null) {
@@ -140,7 +140,7 @@ public class LandClassLoader extends URLClassLoader {
         }
     }
 
-    static DelegateType findDelegateTypeInDelegateConfigs(String className, Map<DelegateType, List<String>> delegateConfig, Matcher matcher) {
+    static DelegateType findDelegateTypeInDelegateConfigs(String className, Map<DelegateType, List<String>> delegateConfig, LandMatcher matcher) {
         for (Map.Entry<DelegateType, List<String>> entry : delegateConfig.entrySet()) {
             if (matchPatterns(className, entry.getValue(), matcher)) {
                 return entry.getKey();
@@ -149,7 +149,7 @@ public class LandClassLoader extends URLClassLoader {
         return DelegateType.PARENT_CHILD;
     }
 
-    static boolean matchPatterns(String className, List<String> patterns, Matcher matcher) {
+    static boolean matchPatterns(String className, List<String> patterns, LandMatcher matcher) {
         for (String pattern : patterns) {
             if (matcher.match(className, pattern)) {
                 return true;
