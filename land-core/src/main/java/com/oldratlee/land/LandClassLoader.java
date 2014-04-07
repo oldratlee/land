@@ -19,16 +19,16 @@ public class LandClassLoader extends URLClassLoader {
     private final Map<DelegateType, List<String>> delegateConfig;
     private final Matcher matcher;
 
-    public LandClassLoader(Map<DelegateType, List<String>> delegateConfig, URL[] urls) {
-        this(delegateConfig, urls, new DefaultLandMatcher(), ClassLoader.getSystemClassLoader());
+    public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig) {
+        this(urls, delegateConfig, new DefaultLandMatcher(), ClassLoader.getSystemClassLoader());
     }
 
-    public LandClassLoader(Map<DelegateType, List<String>> delegateConfig, URL[] urls, ClassLoader parent) {
-        this(delegateConfig, urls, new DefaultLandMatcher(), parent);
+    public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig, ClassLoader parent) {
+        this(urls, delegateConfig, new DefaultLandMatcher(), parent);
     }
 
-    public LandClassLoader(Map<DelegateType, List<String>> delegateConfig, URL[] urls, Matcher matcher) {
-        this(delegateConfig, urls, matcher, ClassLoader.getSystemClassLoader());
+    public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig, Matcher matcher) {
+        this(urls, delegateConfig, matcher, ClassLoader.getSystemClassLoader());
     }
 
     /**
@@ -46,12 +46,12 @@ public class LandClassLoader extends URLClassLoader {
      *     CHILD_ONLY : [com.foo2.p0.*Model, com.foo2.p1.*Impl, com.foo2.p2.*Spi*]
      * }</code></pre>
      *
-     * @param delegateConfig delegate config.
      * @param urls           class path
+     * @param delegateConfig delegate config.
      * @param matcher        class name matcher
      * @param parent         parent classloader
      */
-    public LandClassLoader(Map<DelegateType, List<String>> delegateConfig, URL[] urls, Matcher matcher, ClassLoader parent) {
+    public LandClassLoader(URL[] urls, Map<DelegateType, List<String>> delegateConfig, Matcher matcher, ClassLoader parent) {
         super(urls, parent);
 
         if (delegateConfig == null) {

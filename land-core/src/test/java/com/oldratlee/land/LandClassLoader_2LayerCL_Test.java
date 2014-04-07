@@ -35,27 +35,27 @@ public class LandClassLoader_2LayerCL_Test {
     public void test_ClassInSystemCL_cannot_overwrite() throws Exception {
         Map<DelegateType, List<String>> parentDelegateConfig = new HashMap<>();
         parentDelegateConfig.put(CHILD_ONLY, Arrays.asList("com.oldratlee.land.*"));
-        ClassLoader parent = new LandClassLoader(parentDelegateConfig, new URL[]{lib_common});
+        ClassLoader parent = new LandClassLoader(new URL[]{lib_common}, parentDelegateConfig);
 
         assertEquals(ClassLoader.getSystemClassLoader(), parent.loadClass("com.oldratlee.land.DelegateType").getClassLoader());
 
         Map<DelegateType, List<String>> childDelegateConfig = new HashMap<>();
         childDelegateConfig.put(NONE, Arrays.asList("com.oldratlee.land.*"));
-        ClassLoader child = new LandClassLoader(childDelegateConfig, new URL[]{lib_common}, parent);
+        ClassLoader child = new LandClassLoader(new URL[]{lib_common}, childDelegateConfig, parent);
 
         assertEquals(ClassLoader.getSystemClassLoader(), child.loadClass("com.oldratlee.land.DelegateType").getClassLoader());
     }
 
     @Test
     public void test_NONE() throws Exception {
-        ClassLoader parent = new LandClassLoader(null, new URL[]{lib_common, lib_api});
+        ClassLoader parent = new LandClassLoader(new URL[]{lib_common, lib_api}, null);
 
         Map<DelegateType, List<String>> delegateConfig = new HashMap<>();
         delegateConfig.put(NONE, Arrays.asList(
                 "com.foo.p1.*",
                 lib_package_api + ".*",
                 lib_package_impl + ".*"));
-        ClassLoader child = new LandClassLoader(delegateConfig, new URL[]{lib_common, lib_impl}, parent);
+        ClassLoader child = new LandClassLoader(new URL[]{lib_common, lib_impl}, delegateConfig, parent);
 
         // In Child, default parent-child
         Class<?> fooClass = child.loadClass("com.foo.Foo");
@@ -92,14 +92,14 @@ public class LandClassLoader_2LayerCL_Test {
 
     @Test
     public void test_PARENT_ONLY() throws Exception {
-        ClassLoader parent = new LandClassLoader(null, new URL[]{lib_common, lib_api});
+        ClassLoader parent = new LandClassLoader(new URL[]{lib_common, lib_api}, null);
 
         Map<DelegateType, List<String>> delegateConfig = new HashMap<>();
         delegateConfig.put(PARENT_ONLY, Arrays.asList(
                 "com.foo.p1.*",
                 lib_package_api + ".*",
                 lib_package_impl + ".*"));
-        ClassLoader child = new LandClassLoader(delegateConfig, new URL[]{lib_common, lib_impl}, parent);
+        ClassLoader child = new LandClassLoader(new URL[]{lib_common, lib_impl}, delegateConfig, parent);
 
         // In Child, default parent-child
         Class<?> fooClass = child.loadClass("com.foo.Foo");
@@ -128,14 +128,14 @@ public class LandClassLoader_2LayerCL_Test {
 
     @Test
     public void test_CHILD_ONLY() throws Exception {
-        ClassLoader parent = new LandClassLoader(null, new URL[]{lib_common, lib_api});
+        ClassLoader parent = new LandClassLoader(new URL[]{lib_common, lib_api}, null);
 
         Map<DelegateType, List<String>> delegateConfig = new HashMap<>();
         delegateConfig.put(CHILD_ONLY, Arrays.asList(
                 "com.foo.p1.*",
                 lib_package_api + ".*",
                 lib_package_impl + ".*"));
-        ClassLoader child = new LandClassLoader(delegateConfig, new URL[]{lib_common, lib_impl}, parent);
+        ClassLoader child = new LandClassLoader(new URL[]{lib_common, lib_impl}, delegateConfig, parent);
 
         // In Child, default parent-child
         Class<?> fooClass = child.loadClass("com.foo.Foo");
@@ -164,14 +164,14 @@ public class LandClassLoader_2LayerCL_Test {
 
     @Test
     public void test_PARENT_CHILD() throws Exception {
-        ClassLoader parent = new LandClassLoader(null, new URL[]{lib_common, lib_api});
+        ClassLoader parent = new LandClassLoader(new URL[]{lib_common, lib_api}, null);
 
         Map<DelegateType, List<String>> delegateConfig = new HashMap<>();
         delegateConfig.put(PARENT_CHILD, Arrays.asList(
                 "com.foo.p1.*",
                 lib_package_api + ".*",
                 lib_package_impl + ".*"));
-        ClassLoader child = new LandClassLoader(delegateConfig, new URL[]{lib_common, lib_impl}, parent);
+        ClassLoader child = new LandClassLoader(new URL[]{lib_common, lib_impl}, delegateConfig, parent);
 
         // In Child, default parent-child
         Class<?> fooClass = child.loadClass("com.foo.Foo");
@@ -194,14 +194,14 @@ public class LandClassLoader_2LayerCL_Test {
 
     @Test
     public void test_CHILD_PARENT() throws Exception {
-        ClassLoader parent = new LandClassLoader(null, new URL[]{lib_common, lib_api});
+        ClassLoader parent = new LandClassLoader(new URL[]{lib_common, lib_api}, null);
 
         Map<DelegateType, List<String>> delegateConfig = new HashMap<>();
         delegateConfig.put(CHILD_PARENT, Arrays.asList(
                 "com.foo.p1.*",
                 lib_package_api + ".*",
                 lib_package_impl + ".*"));
-        ClassLoader child = new LandClassLoader(delegateConfig, new URL[]{lib_common, lib_impl}, parent);
+        ClassLoader child = new LandClassLoader(new URL[]{lib_common, lib_impl}, delegateConfig, parent);
 
         // In Child, default parent-child
         Class<?> fooClass = child.loadClass("com.foo.Foo");

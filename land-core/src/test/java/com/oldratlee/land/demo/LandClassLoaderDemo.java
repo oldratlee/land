@@ -24,7 +24,7 @@ public class LandClassLoaderDemo {
         Map<DelegateType, List<String>> delegateConfig = new HashMap<>();
         delegateConfig.put(PARENT_ONLY, Arrays.asList("com.foo.p2.", "com.foo.p3.."));
 
-        ClassLoader classLoader = new LandClassLoader(delegateConfig, new URL[]{Constants.lib_common});
+        ClassLoader classLoader = new LandClassLoader(new URL[]{Constants.lib_common}, delegateConfig);
 
         invokeMain(classLoader.loadClass("com.foo.Foo"));
         invokeMain(classLoader.loadClass("com.foo.p1.P1C1"));

@@ -41,7 +41,7 @@ public class LandLauncher {
     public static Map<String, LandClassLoader> app2LandClassLoaderMap = new HashMap<>();
 
     public ClassLoader createClassLoader(final URL[] urls) {
-        return new LandClassLoader(new HashMap<DelegateType, List<String>>(), urls);
+        return new LandClassLoader(urls, new HashMap<DelegateType, List<String>>());
     }
 
     public static void main(String[] args) throws IOException {
@@ -51,7 +51,7 @@ public class LandLauncher {
         if (System.getProperty(LAND_SHARED_LIB_DIR) != null && System.getProperty(LAND_SHARED_LIB_DIR).length() > 0) {
             Map<DelegateType, List<String>> sharedDelegateConfigs = convertDelegateConfigs(System.getProperty(LAND_SHARED_DELEGATE_CONFIGS));
             URL[] sharedLibs = getClassPathFromLibDir(System.getProperty(LAND_SHARED_LIB_DIR));
-            LandClassLoader sharedClassLoader = new LandClassLoader(sharedDelegateConfigs, sharedLibs, matcher);
+            LandClassLoader sharedClassLoader = new LandClassLoader(sharedLibs, sharedDelegateConfigs, matcher);
             appParentClassLoader = sharedClassLoader;
         }
 
@@ -63,7 +63,7 @@ public class LandLauncher {
                     System.getProperty(String.format(LAND_APP_LIB_DIR_PREFIX, appName)));
             URL[] appLibs = getClassPathFromLibDir(
                     System.getProperty(String.format(LAND_APP_DELEGATE_CONFIGS_PREFIX, appName)));
-            LandClassLoader appClassLoader = new LandClassLoader(appDelegateConfigs, appLibs, matcher, appParentClassLoader);
+            LandClassLoader appClassLoader = new LandClassLoader(appLibs, appDelegateConfigs, matcher, appParentClassLoader);
             app2LandClassLoaderMap.put(appName, appClassLoader);
         }
 
@@ -157,10 +157,10 @@ public class LandLauncher {
             final Method mainMethod = mainClass.getMethod("main", new Class[]{String[].class});
             int modifiers = mainMethod.getModifiers();
             if (!Modifier.isPublic(modifiers) || !Modifier.isStatic(modifiers)) {
-                throw new IllegalStateException(String.format("Main Class %s of App %s is not public static!", mainClassName, appName));
+                throw new IllegalStateException(String.format("the main method of main class(%s) of App(%s) is NOT public static!", mainClassName, appName));
             }
 
-            Thread thread = new Thread() {
+            Thread appMainThread = new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -170,8 +170,8 @@ public class LandLauncher {
                     }
                 }
             };
-            thread.setContextClassLoader(appClassLoader);
-            thread.start();
+            appMainThread.setContextClassLoader(appClassLoader);
+            appMainThread.start();
         } catch (Exception e) {
             throw new IllegalStateException(String.format("Fail to load app %s, cause: %s", appName, e.getMessage()), e);
         }

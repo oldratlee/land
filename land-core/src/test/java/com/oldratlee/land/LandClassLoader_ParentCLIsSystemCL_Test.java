@@ -37,7 +37,7 @@ public class LandClassLoader_ParentCLIsSystemCL_Test {
         delegateConfig.put(NONE, Arrays.asList(
                 "com.foo.p1.*", LandClassLoader_ParentCLIsSystemCL_Test.class.getPackage().getName() + ".*"));
 
-        ClassLoader classLoader = new LandClassLoader(delegateConfig, new URL[]{lib_common});
+        ClassLoader classLoader = new LandClassLoader(new URL[]{lib_common}, delegateConfig);
 
         // In NONE scope
         try {
@@ -72,7 +72,7 @@ public class LandClassLoader_ParentCLIsSystemCL_Test {
         delegateConfig.put(PARENT_ONLY, Arrays.asList(
                 "com.foo.p1.*", LandClassLoader_ParentCLIsSystemCL_Test.class.getPackage().getName() + ".*"));
 
-        ClassLoader classLoader = new LandClassLoader(delegateConfig, new URL[]{lib_common});
+        ClassLoader classLoader = new LandClassLoader(new URL[]{lib_common}, delegateConfig);
 
         // In NONE scope
         try {
