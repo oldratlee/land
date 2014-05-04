@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.oldratlee</groupId>
@@ -17,7 +17,7 @@
 			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
-	
+
 	<modules>
 		<module>land-test-helper</module>
 		<module>land-core</module>
@@ -89,6 +89,12 @@
 							<format>xml</format>
 							<maxmem>256m</maxmem>
 							<aggregate>true</aggregate>
+							<instrumentation>
+								<excludes>
+									<exclude>com/bar/**/*.class</exclude>
+									<exclude>com/foo/**/*.class</exclude>
+								</excludes>
+							</instrumentation>
 						</configuration>
 					</plugin>
 					<plugin>
