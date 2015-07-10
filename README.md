@@ -26,7 +26,7 @@ Land
 :wrench: 功能
 ---------------------------------------
 
-### 1. `ClassLoader`委托关系的完备配置
+### 1. `ClassLoader`父子委托关系的完备配置
 
 完备委托关系可以先分析只有父子2层`ClassLoader`间委托关系的情况。
 
@@ -34,7 +34,7 @@ Land
 
 * 父不加载，子不加载【00】    
 可以用来显式禁止某些类的加载。    
-实际应用中应该 ***很少***会用到。
+实际应用中应该 **_很少_** 会用到。
 * 父不加载，子加载【01】  
 子自理，父里即使包含了相同的类也不会污染子。实际场景：
     * 用来`Tomcat`容器自用`Lib`，不会影响到的`Web`应用。
@@ -43,12 +43,12 @@ Land
     * `Tomcat`容器的`Servlet` `API`，不允许被`Web`应用改写。
 * 父加载，子加载【11】      
 两者可以加载的情况下，按谁优先分成2个Case：
-    * 父优先。【Parent-Child】    
+    * 父优先。【`Parent-Child`】    
     即是`Java`缺省的委托策略，代理模式（`Delegation Mode`）。    
     这个委托策略可以保证`Java`核心库的类型优先加载，`Java`核心库的类的加载工作由引导类加载器来统一完成，保证了`Java`应用所使用的都是同一个版本的`Java`核心库的类，是互相兼容的。
-    * 子优先。【Child-Parent】    
+    * 子优先。【`Child-Parent`】    
     这种委托关系比较复杂，有引起类版本混乱的风险！:bomb:  
-    实际应用中应该 ***避免***这种委托关系。 :no_good:
+    实际应用中应该 **_避免_** 这种委托关系。 :no_good:
 
 > :information_source:    
 > 关于子优先【Child-Parent】类版本混乱的风险的细节原因看了后面参考资料就清楚了，这里只说一个简单例子：    
@@ -61,17 +61,17 @@ Land
 
 委托关系可以统一描述成：
 
-1. None
-2. Child-Only
-3. Parent-Only
-4. Parent-Child
-5. Child-Parent
+1. `None`
+2. `Child-Only`
+3. `Parent-Only`
+4. `Parent-Child`
+5. `Child-Parent`
 
 按上面说明的2层委托关系约定，嵌套推广即可得到 包含 **任意层**`ClassLoader`的完备委托关系。:sparkles:
 
 举个3层`ClassLoader`包含上面组合的例子说明一下：
 
-***TODO***
+**_TODO_**
 
 ### 2. 常用类加载方式
 
@@ -86,13 +86,13 @@ Land
 ---------------------------------------
 
 1. 在一个`JVM`中部署多个应用，但应用依赖不互相影响。    
-这样是提高 **系统利用率**的一种方式。
+这样是提高 **系统利用率** 的一种方式。
 2. 把平台级的二方库从应用中隔离出来，由架构部门统一升级。这样做的原因是：
     - 平台级二方库如果有`Bug`影响面广，有统一的升级的需求。
     - 平台级二方库升级使用面广，升级困难。
 
-> :information_source:    
-> 上面的部署方式中，依赖容器的引入对于应用的开发应该是 **透明**的。
+> :information_source:  
+> 上面的部署方式中，依赖容器的引入对于应用的开发应该是 **透明** 的。
 
 :beer: 目标
 ---------------------------------------
@@ -136,8 +136,8 @@ Land
 注： `sun.misc.Launcher`类没有在`JDK`附带的`src.zip`中，因为是`JDK`具体实现部分（厂商相关），可以在`JDK`源码中找到这个`Java`类。    
 `Sun`的`JDK`的源码下载在[这里](http://download.java.net/openjdk/jdk7/)，厂商相关`Java`类在目录`jdk/src/share/classes`下。
 * `Laucher`类中包含了`Java`除`BootstrapClassloader`（是用本地代码`C/C++`来实现）外另2个`Buildin` `ClassLoader`类的实现：
-    * `ExtClassLoader`
-    * `AppClassLoader`
+    * [`ExtClassLoader`](http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/7u40-b43/sun/misc/Launcher.java#Launcher.ExtClassLoader)
+    * [`AppClassLoader`](http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/7u40-b43/sun/misc/Launcher.java#Launcher.AppClassLoader)
 
 #### Permission
 
