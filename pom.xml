@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -68,6 +68,11 @@
 					<skip>${skip_maven_deploy}</skip>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>com.versioneye</groupId>
+				<artifactId>versioneye-maven-plugin</artifactId>
+				<version>3.5.1</version>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -84,7 +89,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>cobertura-maven-plugin</artifactId>
-						<version>2.6</version>
+						<version>2.7</version>
 						<configuration>
 							<format>xml</format>
 							<maxmem>256m</maxmem>
@@ -100,7 +105,7 @@
 					<plugin>
 						<groupId>org.eluder.coveralls</groupId>
 						<artifactId>coveralls-maven-plugin</artifactId>
-						<version>2.2.0</version>
+						<version>4.0.0</version>
 					</plugin>
 				</plugins>
 			</build>
