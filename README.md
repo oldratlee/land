@@ -27,7 +27,9 @@ Land
 :wrench: 功能
 ---------------------------------------
 
-### 1. `ClassLoader`父子委托关系的完备配置
+### 1. `ClassLoader`委托关系的完备配置
+
+#### 父子`ClassLoader`委托
 
 完备委托关系可以先分析只有父子2层`ClassLoader`间委托关系的情况。
 
@@ -70,9 +72,39 @@ Land
 
 按上面说明的2层委托关系约定，嵌套推广即可得到 包含 **任意层**`ClassLoader`的完备委托关系。:sparkles:
 
-举个3层`ClassLoader`包含上面组合的例子说明一下：
+#### 兄弟`ClassLoader`委托
 
-**_TODO_**
+父子`ClassLoader`由于树状的单继承关系，委托关系比较单一。
+要实现复杂的代理关系，兄弟`ClassLoader`之间代理可以简化。
+
+举个场景，多个中间件如`RPC`、`Message`等，要需要把部分类代理给应用`ClassLoader`，如果就使用父子代理，结果会是这样：
+
+```bash
+System ClassLoader
+    |
+    V
+RPC ClassLoader
+    |
+    V
+Message ClassLoader
+    |
+    V
+App ClassLoader
+```
+
+上面问题是，`RPC ClassLoader`和`Message ClassLoader`之间的父子关系不符合实际关系（`RPC ClassLoader`和`Message ClassLoader`之间并不需要父子代理）。
+
+更合理些的代理关系是：
+
+```bash
+                  System ClassLoader
+                /         |         \
+              /           |          \
+            V             V           V
+RPC ClassLoader -> App ClassLoader <- Message ClassLoader
+```
+
+即`RPC ClassLoader`和`Message ClassLoader`作为`App ClassLoader`的兄弟`ClassLoader`并代理。
 
 ### 2. 常用类加载方式
 
