@@ -5,10 +5,7 @@ import com.oldratlee.land.matcher.LandMatcher;
 
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Land ClassLoader.
@@ -16,6 +13,7 @@ import java.util.Map;
  * @author ding.lid
  */
 public class LandClassLoader extends URLClassLoader {
+    public static final String CLASS = "class ";
     private final Map<DelegateType, List<String>> delegateConfig;
     private final LandMatcher matcher;
 
@@ -55,7 +53,7 @@ public class LandClassLoader extends URLClassLoader {
         super(urls, parent == null ? getSystemClassLoader() : parent);
 
         if (delegateConfig == null) {
-            delegateConfig = new HashMap<>();
+            delegateConfig = new EnumMap<>(DelegateType.class);
         }
         this.matcher = matcher == null ? new DefaultLandMatcher() : matcher;
         for (Map.Entry<DelegateType, List<String>> typeEntry : delegateConfig.entrySet()) {
@@ -100,44 +98,56 @@ public class LandClassLoader extends URLClassLoader {
         ClassLoader parent = getParent();
         switch (delegateType) {
             case NONE:
-                throw new ClassNotFoundException("class " + className + "(NONE) is forbidden by land config!");
+                throw new ClassNotFoundException(CLASS + className + "(NONE) is forbidden by land config!");
             case PARENT_ONLY:
-                if (parent == getSystemClassLoader()) {
-                    throw new ClassNotFoundException("class " + className + "(PARENT_ONLY) not found in parent class loader");
-                } else {
-                    // TODO improve exception message
-                    return parent.loadClass(className);
-                }
+                return parentOnly(className, parent);
             case CHILD_ONLY:
                 // TODO improve exception message
                 return findClass(className);
             case PARENT_CHILD:
-                // parent does not load this class before
-                if (parent != getSystemClassLoader()) {
-                    try {
-                        return parent.loadClass(className);
-                    } catch (ClassNotFoundException e) {
-                        // ClassNotFoundException thrown if class not found
-                    }
-                }
-                return findClass(className);
+                return parentChild(className, parent);
             case CHILD_PARENT:
-                try {
-                    return findClass(className);
-                } catch (ClassNotFoundException e) {
-                    // ClassNotFoundException thrown if class not found
-                }
-                if (parent != getSystemClassLoader()) {
-                    try {
-                        return parent.loadClass(className);
-                    } catch (ClassNotFoundException e) {
-                        // ClassNotFoundException thrown if class not found
-                    }
-                }
-                throw new ClassNotFoundException("class " + className + "(CHILD_PARENT) not found in parent class loader");
+                return childParent(className, parent);
             default:
                 throw new IllegalStateException("Unsupported delegate config " + delegateType);
         }
+    }
+
+    private Class parentOnly(String className, ClassLoader parent) throws ClassNotFoundException {
+        if (parent == getSystemClassLoader()) {
+            throw new ClassNotFoundException(CLASS + className + "(PARENT_ONLY) not found in parent class loader");
+        } else {
+            // TODO improve exception message
+            return parent.loadClass(className);
+        }
+    }
+
+    private Class parentChild(String className, ClassLoader parent) throws ClassNotFoundException {
+        // parent does not load this class before
+        if (parent != getSystemClassLoader()) {
+            try {
+                return parent.loadClass(className);
+            } catch (ClassNotFoundException e) {
+                // ClassNotFoundException thrown if class not found
+            }
+        }
+        return findClass(className);
+    }
+
+    private Class childParent(String className, ClassLoader parent) throws ClassNotFoundException {
+        try {
+            return findClass(className);
+        } catch (ClassNotFoundException e) {
+            // ClassNotFoundException thrown if class not found
+        }
+        if (parent != getSystemClassLoader()) {
+            try {
+                return parent.loadClass(className);
+            } catch (ClassNotFoundException e) {
+                // ClassNotFoundException thrown if class not found
+            }
+        }
+        throw new ClassNotFoundException(CLASS + className + "(CHILD_PARENT) not found in parent class loader");
     }
 
     static DelegateType findDelegateTypeInDelegateConfigs(String className, Map<DelegateType, List<String>> delegateConfig, LandMatcher matcher) {

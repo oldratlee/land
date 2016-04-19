@@ -9,12 +9,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ding.lid
@@ -36,14 +31,14 @@ public class LandLauncher {
 
     private static final LandLauncher launcher = new LandLauncher();
 
+    public static final Map<String, LandClassLoader> app2LandClassLoaderMap = new HashMap<>();
+
     public static LandLauncher getLauncher() {
         return launcher;
     }
 
-    public static Map<String, LandClassLoader> app2LandClassLoaderMap = new HashMap<>();
-
     public ClassLoader createClassLoader(final URL[] urls) {
-        return new LandClassLoader(urls, new HashMap<DelegateType, List<String>>());
+        return new LandClassLoader(urls, new EnumMap<DelegateType, List<String>>(DelegateType.class));
     }
 
     public static void main(String[] args) throws IOException {
@@ -93,7 +88,7 @@ public class LandLauncher {
     }
 
     static Map<DelegateType, List<String>> convertDelegateConfigs(String delegateConfigs) {
-        Map<DelegateType, List<String>> ret = new LinkedHashMap<>();
+        Map<DelegateType, List<String>> ret = new EnumMap<>(DelegateType.class);
 
         String[] delegateConfigArray = delegateConfigs.split("\\s*;\\s*");
         for (String delegateConfig : delegateConfigArray) {
