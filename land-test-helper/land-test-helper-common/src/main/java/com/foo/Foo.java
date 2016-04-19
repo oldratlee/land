@@ -7,7 +7,7 @@ import java.util.Arrays;
  */
 public class Foo {
     static {
-        System.out.printf("loaded class %s by class loader %s.\n", Foo.class.getName(), Foo.class.getClassLoader());
+        System.out.printf("loaded class %s by class loader %s.%n", Foo.class.getName(), Foo.class.getClassLoader());
     }
 
     public static void main(String[] args) {
