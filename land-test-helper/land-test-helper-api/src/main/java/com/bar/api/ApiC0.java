@@ -10,6 +10,8 @@ public class ApiC0 {
         System.out.printf("loaded class %s by class loader %s.\n", ApiC0.class.getName(), ApiC0.class.getClassLoader());
     }
 
+    private ApiC0() {}
+
     public static void main(String[] args) {
         System.out.println("args is: " + Arrays.toString(args));
         ApiC0 foo = new ApiC0();
