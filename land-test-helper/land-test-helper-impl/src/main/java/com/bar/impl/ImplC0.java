@@ -7,7 +7,7 @@ import java.util.Arrays;
  */
 public class ImplC0 {
     static {
-        System.out.printf("loaded class %s by class loader %s.\n", ImplC0.class.getName(), ImplC0.class.getClassLoader());
+        System.out.printf("loaded class %s by class loader %s.%n", ImplC0.class.getName(), ImplC0.class.getClassLoader());
     }
 
     public static void main(String[] args) {
