@@ -159,7 +159,7 @@ RPC ClassLoader -> App ClassLoader <- Message ClassLoader
 详细介绍了`Java`类的加载、链接和初始化。    
 不同`Java`版本的语言和`JVM`规范在<http://docs.oracle.com/javase/specs/>
 * [Multithreaded Custom Class Loaders in Java SE 7](http://docs.oracle.com/javase/7/docs/technotes/guides/lang/cl-mt.html)，`JDK` 7修复了`ClassLoader`的死锁问题。    
-这个问题在`JDK`之前的版本中一直存在。平时使用中确实不容易碰到，但在线上应用复杂场景中有观察到过。    
+这个问题在`JDK 7`之前的版本中一直存在。平时使用中确实不容易碰到，但在线上应用复杂和高压力场景中有实际观察到过。    
 这篇文档给出问题的原因及其修复方法。
 * `Java`命令行选项`-verbose:class`可以在加载类时显示相关信息。    
 完整`Java`命令行选项参见： <http://docs.oracle.com/javase/7/docs/technotes/tools/windows/java.html>
@@ -186,7 +186,7 @@ RPC ClassLoader -> App ClassLoader <- Message ClassLoader
     * `Tomcat`的类加载策略。
     * `OSGi`的类加载策略。
 * [The basics of Java class loaders](http://www.javaworld.com/article/2077260/learn-java/the-basics-of-java-class-loaders.html)   
-`1996`年的一篇老文章，其中描述功能现在可以通过`Java 2`提供的[`java.net.URLClassLoader`](http://docs.oracle.com/javase/7/docs/api/java/net/URLClassLoader.html)方便的完成。    
+`1996`年(`Java 1`的年代)的一篇老文章，其中描述功能现在可以通过`Java 2`提供的[`java.net.URLClassLoader`](http://docs.oracle.com/javase/7/docs/api/java/net/URLClassLoader.html)方便的完成。    
 但实现复杂自定义`ClassLoader`的流程是一样的，文章给出了实现自定义`ClassLoader`
     * 要覆盖的`ClassLoader`关键方法
     * 要遵循的基本约定
