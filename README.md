@@ -7,6 +7,33 @@ Land
 [![Dependency Status](https://www.versioneye.com/user/projects/55feeb9a4b3478000b001c9d/badge.svg)](https://www.versioneye.com/user/projects/55feeb9a4b3478000b001c9d)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [:checkered_flag: 概述](#checkered_flag-%E6%A6%82%E8%BF%B0)
+- [:wrench: 功能](#wrench-%E5%8A%9F%E8%83%BD)
+    - [1. `ClassLoader`委托关系的完备配置](#1-classloader%E5%A7%94%E6%89%98%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AE%8C%E5%A4%87%E9%85%8D%E7%BD%AE)
+        - [父子`ClassLoader`委托](#%E7%88%B6%E5%AD%90classloader%E5%A7%94%E6%89%98)
+        - [兄弟`ClassLoader`委托](#%E5%85%84%E5%BC%9Fclassloader%E5%A7%94%E6%89%98)
+    - [2. 常用类加载方式](#2-%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%96%B9%E5%BC%8F)
+- [:art: 使用场景](#art-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF)
+- [:beer: 目标](#beer-%E7%9B%AE%E6%A0%87)
+- [:loudspeaker: 进阶目标](#loudspeaker-%E8%BF%9B%E9%98%B6%E7%9B%AE%E6%A0%87)
+- [:books: 相关资料](#books-%E7%9B%B8%E5%85%B3%E8%B5%84%E6%96%99)
+    - [:microscope: 官方资料](#microscope-%E5%AE%98%E6%96%B9%E8%B5%84%E6%96%99)
+        - [ClassLoader](#classloader)
+        - [Permission](#permission)
+    - [:bookmark: 二手资料](#bookmark-%E4%BA%8C%E6%89%8B%E8%B5%84%E6%96%99)
+        - [ClassLoader](#classloader-1)
+    - [ClassLoader实际应用](#classloader%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8)
+    - [安全](#%E5%AE%89%E5%85%A8)
+    - [ClassLoader Memory Leak](#classloader-memory-leak)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+# :checkered_flag: 概述
+
 :point_right: 一个简单的基于`ClassLoader`用于依赖隔离的容器实现。  
 \# 在`Java`中依赖主要是`Jar`。
 
@@ -24,12 +51,11 @@ Land
 即必须 **委托**。
 
 
-:wrench: 功能
----------------------------------------
+# :wrench: 功能
 
-### 1. `ClassLoader`委托关系的完备配置
+## 1. `ClassLoader`委托关系的完备配置
 
-#### 父子`ClassLoader`委托
+### 父子`ClassLoader`委托
 
 完备委托关系可以先分析只有父子2层`ClassLoader`间委托关系的情况。
 
@@ -72,7 +98,7 @@ Land
 
 按上面说明的2层委托关系约定，嵌套推广即可得到 包含 **任意层**`ClassLoader`的完备委托关系。:sparkles:
 
-#### 兄弟`ClassLoader`委托
+### 兄弟`ClassLoader`委托
 
 父子`ClassLoader`由于树状的单继承关系，委托关系比较单一。
 要实现复杂的代理关系，兄弟`ClassLoader`之间代理可以简化。
@@ -106,7 +132,7 @@ RPC ClassLoader -> App ClassLoader <- Message ClassLoader
 
 即`RPC ClassLoader`和`Message ClassLoader`作为`App ClassLoader`的兄弟`ClassLoader`并代理。
 
-### 2. 常用类加载方式
+## 2. 常用类加载方式
 
 * 加载本地类目录或`Jar`文件
 * 加载本地有类目录或`Jar`文件的目录
@@ -115,8 +141,7 @@ RPC ClassLoader -> App ClassLoader <- Message ClassLoader
 * 加密类工具/加载加密的类    
 这个功能应该很少使用 :stuck_out_tongue_closed_eyes: ，为了功能完整而说明。
 
-:art: 使用场景
----------------------------------------
+# :art: 使用场景
 
 1. 在一个`JVM`中部署多个应用，但应用依赖不互相影响。    
 这样是提高 **系统利用率** 的一种方式。
@@ -127,8 +152,7 @@ RPC ClassLoader -> App ClassLoader <- Message ClassLoader
 > :information_source:  
 > 上面的部署方式中，依赖容器的引入对于应用的开发应该是 **透明** 的。
 
-:beer: 目标
----------------------------------------
+# :beer: 目标
 
 * 给出类加载委托情况的完备说明
 * 给出类加载委托规则的规范描述
@@ -141,19 +165,17 @@ RPC ClassLoader -> App ClassLoader <- Message ClassLoader
 * 说明这些框架中`ClassLoader`的实现方法及其使用契约
 * 给出`ClassLoader`实现方法及其使用契约的最佳实践
 
-:loudspeaker: 进阶目标
----------------------------------------
+# :loudspeaker: 进阶目标
 
 * `Web`容器集成
 * 实现`OSGi`规范    
 这个也可以用来验证实现是否面向编程友好
 
-:books: 相关资料
----------------------------------------
+# :books: 相关资料
 
-### :microscope: 官方资料
+## :microscope: 官方资料
 
-#### ClassLoader
+### ClassLoader
 
 * [The Java Language Specification](http://docs.oracle.com/javase/specs/jls/se7/html/index.html)的[第12章 Execution](http://docs.oracle.com/javase/specs/jls/se7/html/jls-12.html)和[The Java Virtual Machine Specification](http://docs.oracle.com/javase/specs/jvms/se7/html/index.html)的[第5章 Loading, Linking, and Initializing](http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-5.html)    
 详细介绍了`Java`类的加载、链接和初始化。    
@@ -172,14 +194,14 @@ RPC ClassLoader -> App ClassLoader <- Message ClassLoader
     * [`ExtClassLoader`](http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/7u40-b43/sun/misc/Launcher.java#Launcher.ExtClassLoader)
     * [`AppClassLoader`](http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/7u40-b43/sun/misc/Launcher.java#Launcher.AppClassLoader)
 
-#### Permission
+### Permission
 
 * [Permissions in JDK 7](http://docs.oracle.com/javase/7/docs/technotes/guides/security/permissions.html)
 * [Permissions in JDK 6](http://docs.oracle.com/javase/6/docs/technotes/guides/security/permissions.html)
 
-### :bookmark: 二手资料
+## :bookmark: 二手资料
 
-#### ClassLoader
+### ClassLoader
 
 * [IBM DeveloperWorks - 深入探讨Java类加载器](https://www.ibm.com/developerworks/cn/java/j-lo-classloader/)。一篇非常不错的`ClassLoader`的介绍文章，并且对比介绍了
     * `Java` `SPI`的类加载策略。包含`JDBC`和`JAXP`为代表的2种方式。
@@ -204,20 +226,20 @@ ACM OOPSLA'98, pp.36-44, 1998.
 * [Wikipedia - Java Classloader](http://en.wikipedia.org/wiki/Java_Classloader)
 * [Class.forName() vs ClassLoader.loadClass() - which to use for dynamic loading?](http://stackoverflow.com/questions/8100376/class-forname-vs-classloader-loadclass-which-to-use-for-dynamic-loading)
 
-### ClassLoader实际应用
+## ClassLoader实际应用
 
 * [Understanding WebLogic Server Application Classloading](http://docs.oracle.com/cd/E24329_01/web.1211/e24368/classloading.htm)
 * [The Apache Tomcat 5.5 Servlet/JSP Container - Class Loader HOW-TO](http://tomcat.apache.org/tomcat-5.5-doc/class-loader-howto.html)：详细介绍了`Tomcat` 5.5中的类加载器机制。
 * [OSGi Service Platform Core Specification](http://www.osgi.org/Specifications/HomePage)
 
-### 安全
+## 安全
 
 * [IBM DeveloperWorks - Java安全模型介绍](http://www.ibm.com/developerworks/cn/java/j-lo-javasecurity/)
 * [IBM DeveloperWorks - Java 授权内幕](http://www.ibm.com/developerworks/cn/java/j-javaauth/)  
 更多内容参见：[IBM DeveloperWorks - Java安全专题](https://www.ibm.com/developerworks/cn/java/j-security/)
 * [Java Security - Chapter 3. Java Class Loaders](http://docstore.mik.ua/orelly/java-ent/security/ch03_01.htm)
 
-### ClassLoader Memory Leak
+## ClassLoader Memory Leak
 
 * [Classloader leaks: the dreaded "java.lang.OutOfMemoryError: PermGen space" exception](http://frankkieviet.blogspot.com/2006/10/classloader-leaks-dreaded-permgen-space.html)
 * [How to fix the dreaded "java.lang.OutOfMemoryError: PermGen space" exception (classloader leaks)](http://frankkieviet.blogspot.com/2006/10/how-to-fix-dreaded-permgen-space.html)
