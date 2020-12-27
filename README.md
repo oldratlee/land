@@ -20,6 +20,7 @@ Land
 - [:beer: 目标](#beer-%E7%9B%AE%E6%A0%87)
 - [:loudspeaker: 进阶目标](#loudspeaker-%E8%BF%9B%E9%98%B6%E7%9B%AE%E6%A0%87)
 - [:books: 相关资料](#books-%E7%9B%B8%E5%85%B3%E8%B5%84%E6%96%99)
+    - [已有的基于ClassLoader实现的隔离容器项目](#%E5%B7%B2%E6%9C%89%E7%9A%84%E5%9F%BA%E4%BA%8Eclassloader%E5%AE%9E%E7%8E%B0%E7%9A%84%E9%9A%94%E7%A6%BB%E5%AE%B9%E5%99%A8%E9%A1%B9%E7%9B%AE)
     - [:microscope: 官方资料](#microscope-%E5%AE%98%E6%96%B9%E8%B5%84%E6%96%99)
         - [ClassLoader](#classloader)
         - [Permission](#permission)
@@ -171,6 +172,13 @@ RPC ClassLoader -> App ClassLoader <- Message ClassLoader
 这个也可以用来验证实现是否面向编程友好
 
 # :books: 相关资料
+
+## 已有的基于ClassLoader实现的隔离容器项目
+
+- [`jboss-modules`](https://github.com/jboss-modules/jboss-modules)  
+    JBoss Modules is a standalone implementation of a modular (non-hierarchical) class loading and execution environment for Java.
+- [`sofa-jarslink`](https://github.com/sofastack/sofa-jarslink)  
+    Jarslink is a sofa ark plugin used to manage multi-application deployment
 
 ## :microscope: 官方资料
 
