@@ -1,12 +1,16 @@
-Land
-=================================================
+# <div align="center">🍡 Land</div>
 
-[![Build Status](https://img.shields.io/travis/com/oldratlee/land/master?logo=travis-ci&logoColor=white)](https://travis-ci.com/github/oldratlee/land)
-[![Coverage Status](https://coveralls.io/repos/oldratlee/classloader-playground/badge.svg?branch=master&?logo=codecov&logoColor=white)](https://coveralls.io/r/oldratlee/classloader-playground?branch=master)
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
-[![GitHub Stars](https://img.shields.io/github/stars/oldratlee/land)](https://github.com/oldratlee/land/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/oldratlee/land)](https://github.com/oldratlee/land/fork)
-[![GitHub issues](https://img.shields.io/github/issues/oldratlee/classloader-playground.svg)](https://github.com/oldratlee/land/issues)
+<p align="center">
+<a href="https://github.com/oldratlee/land/actions/workflows/ci.yaml"><img src="https://img.shields.io/github/workflow/status/oldratlee/land/CI/master?logo=github&logoColor=white" alt="Github Workflow Build Status"></a>
+<a href="https://openjdk.java.net/"><img src="https://img.shields.io/badge/Java-8+-green?logo=openjdk&logoColor=white" alt="JDK support"></a>
+<a href="https://www.apache.org/licenses/LICENSE-2.0.html"><img src="https://img.shields.io/github/license/oldratlee/land?color=4D7A97&logo=apache" alt="License"></a>
+<a href="https://github.com/oldratlee/land/stargazers"><img src="https://img.shields.io/github/stars/oldratlee/land" alt="GitHub Stars"></a>
+<a href="https://github.com/oldratlee/land/fork"><img src="https://img.shields.io/github/forks/oldratlee/land" alt="GitHub Forks"></a>
+<a href="https://github.com/oldratlee/land/issues"><img src="https://img.shields.io/github/issues/oldratlee/land" alt="GitHub issues"></a>
+<a href="https://github.com/oldratlee/land"><img src="https://img.shields.io/github/repo-size/oldratlee/land" alt="GitHub repo size"></a>
+<a href="https://gitpod.io/#https://github.com/oldratlee/land"><img src="https://img.shields.io/badge/Gitpod-ready--to--code-green?label=gitpod&logo=gitpod&logoColor=white" alt="gitpod: Ready to Code"></a>
+</p>
+
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
