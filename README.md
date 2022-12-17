@@ -1,7 +1,7 @@
 # <div align="center">🍡 Land</div>
 
 <p align="center">
-<a href="https://github.com/oldratlee/land/actions/workflows/ci.yaml"><img src="https://img.shields.io/github/workflow/status/oldratlee/land/CI/master?logo=github&logoColor=white" alt="Github Workflow Build Status"></a>
+<a href="https://github.com/oldratlee/land/actions/workflows/ci.yaml"><img src="https://img.shields.io/github/actions/workflow/status/oldratlee/land/ci.yaml?branch=master&logo=github&logoColor=white" alt="Github Workflow Build Status"></a>
 <a href="https://openjdk.java.net/"><img src="https://img.shields.io/badge/Java-8+-green?logo=openjdk&logoColor=white" alt="JDK support"></a>
 <a href="https://www.apache.org/licenses/LICENSE-2.0.html"><img src="https://img.shields.io/github/license/oldratlee/land?color=4D7A97&logo=apache" alt="License"></a>
 <a href="https://github.com/oldratlee/land/stargazers"><img src="https://img.shields.io/github/stars/oldratlee/land" alt="GitHub Stars"></a>
